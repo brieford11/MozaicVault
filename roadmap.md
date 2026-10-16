@@ -1,9 +1,9 @@
 # Work
-- [ ] Add TV shows and ticket-stub photos.
-- [ ] Add journey transport plans and local reminders with calendar export.
-- [ ] Filter Atlas pins by page and remove summary boxes.
-- [ ] Rename to Mozaic Vault and add a coastal Highlands home photo.
-- [ ] Verify the new local archive flows.
+- [x] Add TV shows and ticket-stub photos.
+- [x] Add journey transport plans and local reminders with calendar export.
+- [x] Filter Atlas pins by page and remove summary boxes.
+- [x] Rename to Mozaic Vault and add a coastal Highlands home photo.
+- [x] Verify the new local archive flows.
 - [x] Add collection counts, concert type, custom details, and separate town/country.
 - [x] Add half-star ratings and simplify Want List wording.
 - [x] Add quick travel pin control and tap-to-zoom maps.
