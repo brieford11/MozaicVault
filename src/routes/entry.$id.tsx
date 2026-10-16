@@ -47,7 +47,7 @@ function EntryPage() {
 
   if (!e) return <AppShell title="…" back={<BackLink />}><p className="p-6 text-muted-foreground">Opening the page…</p></AppShell>;
   const c = getCategory(e.category);
-  if (!c) return <AppShell title="Page unavailable" back={<BackLink />} />;
+  if (!c) return <AppShell title="Page unavailable" back={<BackLink />}><p className="p-6 text-muted-foreground">This category is unavailable.</p></AppShell>;
   const set = (patch: Partial<Entry>) => { setE({ ...e, ...patch }); setSaved(false); };
   const setField = (k: string, v: string) => set({ fields: { ...e.fields, [k]: v } });
 

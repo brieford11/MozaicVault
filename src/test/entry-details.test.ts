@@ -8,7 +8,7 @@ describe("Event details", () => {
     it(`${category} supports a time`, () => {
       expect(getCategory(category)?.fields.find((f) => f.key === "time")?.type).toBe("time");
       const entry = { ...blankEntry(category), fields: { time: "19:30" } };
-      expect(normalizeEntry(entry).fields.time).toBe("19:30");
+      expect(normalizeEntry(entry).fields["time"]).toBe("19:30");
     });
   }
 
@@ -17,7 +17,7 @@ describe("Event details", () => {
     expect(getEntryTitle(entry)).toBe("Florence + the Machine");
     const normalized = normalizeEntry(entry);
     expect(normalized.title).toBe("Florence + the Machine");
-    expect(normalized.fields.creator).toBeUndefined();
+    expect(normalized.fields["creator"]).toBeUndefined();
     expect(getEntryTitle({ ...normalized, title: "Björk" })).toBe("Björk");
     expect(getCategory("concerts")?.fields.some((f) => f.key === "creator")).toBe(false);
   });

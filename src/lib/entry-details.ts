@@ -2,7 +2,7 @@ import type { Entry } from "./db";
 
 // Older concerts stored the artist separately. Promote it when opening the page.
 export function getEntryTitle(entry: Entry): string {
-  return entry.category === "concerts" ? entry.fields.creator?.trim() || entry.title : entry.title;
+  return entry.category === "concerts" ? entry.fields["creator"]?.trim() || entry.title : entry.title;
 }
 
 export function normalizeEntry(entry: Entry): Entry {
