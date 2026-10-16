@@ -1,4 +1,8 @@
 # Work
+- [x] Add collection counts, concert type, custom details, and separate town/country.
+- [x] Add half-star ratings and simplify Want List wording.
+- [x] Add quick travel pin control and tap-to-zoom maps.
+- [x] Replace Pinboard with Favourites and verify local persistence.
 - [x] Add local archive export and device sharing, including audio.
 - [x] Enrich the Highlands palette with deep green, blue, and purple.
 - [x] Verify exports, sharing fallback, and the updated screen.

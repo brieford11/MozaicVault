@@ -11,3 +11,5 @@
 - All user data is stored only in browser IndexedDB (src/lib/db.ts); no cloud, network APIs, or geolocation — user requires fully local, private storage.
 - Archive exports are versioned JSON files with embedded audio data URLs, prepared locally before a download or native share click to preserve mobile user activation.
 - Category-specific entry compatibility is handled by browser-safe helpers in src/lib/entry-details.ts so older records remain editable and list titles match the editor.
+- Maps use bundled world geometry and d3-zoom for local-only pointer-anchored zoom, pan and touch gestures.
+- Favourites aggregates explicitly favourited entries and Other Favourites; the former pinboard path redirects there to preserve old links.

@@ -10,7 +10,7 @@ export function EntryCard({ e, showCat }: { e: Entry; showCat?: boolean }) {
   const heading = music ? e.fields["creator"] : getEntryTitle(e) || "Untitled";
   const sub = music
     ? [e.title, e.fields["year"]].filter(Boolean).join(" · ")
-    : [e.category === "concerts" ? undefined : e.fields["creator"], e.fields["country"], e.fields["city"], e.fields["venue"], e.fields["year"] || e.fields["date"], e.fields["time"]].filter(Boolean).join(" · ");
+    : [e.category === "concerts" ? undefined : e.fields["creator"], e.fields["town"], e.fields["country"], e.fields["city"], e.fields["venue"], e.fields["year"] || e.fields["date"], e.fields["time"]].filter(Boolean).join(" · ");
   return (
     <Link to="/entry/$id" params={{ id: e.id }}
       className="block rounded-md border border-border bg-card px-3 py-2 shadow-[var(--shadow-drawer)] transition-colors active:bg-secondary/40">

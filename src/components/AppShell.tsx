@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
-export function AppShell({ children, title, back }: { children: ReactNode; title?: string; back?: ReactNode }) {
+export function AppShell({ children, title, back, actions }: { children: ReactNode; title?: string; back?: ReactNode; actions?: ReactNode }) {
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col pb-24">
       {title && (
         <header className="sticky top-0 z-20 flex items-center gap-3 bg-background/85 px-4 py-3 backdrop-blur">
           {back}
           <h1 className="truncate text-2xl font-semibold tracking-wide">{title}</h1>
+          {actions && <div className="ml-auto flex shrink-0 gap-1">{actions}</div>}
         </header>
       )}
       <main className="flex-1">{children}</main>
@@ -16,7 +17,7 @@ export function AppShell({ children, title, back }: { children: ReactNode; title
           {[
             { to: "/", label: "Cabinet", g: "▤" },
             { to: "/map", label: "Atlas", g: "✧" },
-            { to: "/pinboard", label: "Pinboard", g: "⚲" },
+            { to: "/favourites", label: "Favourites", g: "♡" },
           ].map((n) => (
             <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="flex flex-col items-center rounded-md py-2 text-muted-foreground" activeProps={{ className: "bg-secondary text-primary" }}>
               <span className="text-xl leading-none">{n.g}</span>
