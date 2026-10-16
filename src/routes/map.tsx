@@ -26,8 +26,8 @@ function Atlas() {
   const [f, setF] = useState("all");
   const geo = (entries ?? []).filter((e) => e.lat != null && e.lng != null && TONE[e.category] && (f === "all" || e.category === f));
   const travels = (entries ?? []).filter((e) => e.category === "travels");
-  const intl = travels.filter((e) => e.fields.scope === "International").length;
-  const countries = new Set(travels.map((e) => e.fields.country?.trim().toLowerCase()).filter(Boolean)).size;
+  const intl = travels.filter((e) => e.fields["scope"] === "International").length;
+  const countries = new Set(travels.map((e) => e.fields["country"]?.trim().toLowerCase()).filter(Boolean)).size;
 
   return (
     <AppShell title="Atlas">

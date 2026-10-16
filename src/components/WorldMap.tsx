@@ -5,7 +5,7 @@ import world from "world-atlas/countries-110m.json";
 
 const W = 800, H = 420;
 
-export type Pin = { id: string; lat: number; lng: number; label: string; tone?: "brass" | "heather" | "moss" };
+export type Pin = { id: string; lat: number; lng: number; label: string; tone?: "brass" | "heather" | "moss" | undefined };
 
 export function WorldMap({ pins, onPick, onPinClick, selected }: {
   pins: Pin[]; onPick?: (lat: number, lng: number) => void; onPinClick?: (id: string) => void; selected?: { lat: number; lng: number } | undefined;

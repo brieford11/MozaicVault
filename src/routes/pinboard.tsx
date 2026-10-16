@@ -27,11 +27,11 @@ function Pinboard() {
           {pins.map((e, i) => (
             <Link key={e.id} to="/entry/$id" params={{ id: e.id }} className={`page relative block rounded-sm p-3 pt-5 ${TILT[i % TILT.length]}`}>
               <span className="absolute left-1/2 top-1 h-3 w-3 -translate-x-1/2 rounded-full bg-heather shadow" />
-              <p className="text-[10px] uppercase tracking-widest text-ink-soft">{e.fields.kind || "Third place"}</p>
+              <p className="text-[10px] uppercase tracking-widest text-ink-soft">{e.fields["kind"] || "Third place"}</p>
               <h3 className="text-lg font-semibold leading-tight">{e.title}</h3>
-              {e.fields.country && <p className="text-xs text-ink-soft">{e.fields.country}</p>}
+              {e.fields["country"] && <p className="text-xs text-ink-soft">{e.fields["country"]}</p>}
               {e.rating > 0 && <p className="mt-1 font-display text-sm text-ink">★ {e.rating}/10</p>}
-              {e.senses.mood && <p className="mt-1 line-clamp-2 font-hand text-base text-ink-soft">{e.senses.mood}</p>}
+              {e.senses["mood"] && <p className="mt-1 line-clamp-2 font-hand text-base text-ink-soft">{e.senses["mood"]}</p>}
             </Link>
           ))}
         </div>
