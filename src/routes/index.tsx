@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
+import { ArchiveActions } from "@/components/ArchiveActions";
 import { CATEGORIES, DRAWERS } from "@/lib/categories";
 import { useEntries } from "@/lib/db";
 import hero from "@/assets/highlands.jpg";
@@ -51,7 +52,8 @@ function Index() {
             </div>
           </section>
         ))}
-        <p className="pb-4 text-center font-hand text-xl text-muted-foreground">nothing leaves this little house.</p>
+        <ArchiveActions entries={entries} />
+        <p className="pb-4 text-center font-hand text-xl text-muted-foreground">kept here. shared only by you.</p>
       </div>
     </AppShell>
   );

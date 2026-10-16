@@ -9,3 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 - All user data is stored only in browser IndexedDB (src/lib/db.ts); no cloud, network APIs, or geolocation — user requires fully local, private storage.
+- Archive exports are versioned JSON files with embedded audio data URLs, prepared locally before a download or native share click to preserve mobile user activation.
