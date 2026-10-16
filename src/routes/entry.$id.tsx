@@ -50,7 +50,7 @@ function EntryPage() {
   const save = async () => {
     await db.put({ ...e, title: e.title.trim() || "Untitled", updatedAt: Date.now() });
     setSaved(true);
-    if (isNew) nav({ to: "/entry/$id", params: { id: e.id }replace: true });
+    if (isNew) nav({ to: "/entry/$id", params: { id: e.id }, replace: true });
     setIsNew(false);
   };
   const remove = async () => {
