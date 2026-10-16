@@ -10,4 +10,4 @@
 - [x] Journeys: multiple countries/cities; festivals: acts list + date range.
 - [x] Books: edition combo with custom option, condition dropdown; brews: roast/steep dropdowns + flavour profile.
 - [x] Rename save button; make bottom menu more prominent.
-- [ ] Verify build and spot-check editor/shelf in preview.
+- [x] Verify build and spot-check editor/shelf in preview.
