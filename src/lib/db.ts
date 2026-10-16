@@ -7,7 +7,8 @@ export type Entry = {
   category: string;
   title: string;
   fields: Record<string, string>;
-  rating: number; // 0-10
+  rating: number; // 0-10 in half-star increments
+  favourite?: boolean;
   notes: string;
   senses: Record<string, string>;
   lat?: number | undefined;

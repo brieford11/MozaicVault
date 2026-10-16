@@ -1,5 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Heart, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { AppShell, BackLink } from "@/components/AppShell";
 import { StarRating } from "@/components/StarRating";
 import { AudioRecorder } from "@/components/AudioRecorder";
@@ -39,6 +41,7 @@ function EntryPage() {
   const [e, setE] = useState<Entry | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [saved, setSaved] = useState(false);
+  const mapSection = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (id === "new") { setE(blankEntry(cat ?? "favourites")); setIsNew(true); }
@@ -64,7 +67,10 @@ function EntryPage() {
   };
 
   return (
-    <AppShell title={isNew ? `New ${c.singular}` : c.singular} back={<BackLink cat={e.category} />}>
+    <AppShell title={isNew ? `New ${c.singular}` : c.singular} back={<BackLink cat={e.category} />} actions={<>
+      {c.travel && <Button variant="ghost" size="icon" aria-label="Pin this place" title="Pin this place" onClick={() => mapSection.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "center" })}><MapPin /></Button>}
+      <Button variant="ghost" size="icon" aria-label={e.favourite ? "Remove from favourites" : "Add to favourites"} aria-pressed={e.favourite ?? false} title="Favourites" onClick={() => set({ favourite: !e.favourite })}><Heart className={e.favourite ? "fill-primary text-primary" : ""} /></Button>
+    </>}>
       <div className="px-3 pb-6">
         <article className="page space-y-6 rounded-sm px-5 py-6">
           <div>
@@ -74,7 +80,7 @@ function EntryPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-            {c.fields.map((f) => (
+            {c.fields.filter((f) => !f.showWhen || e.fields[f.showWhen.key] === f.showWhen.value).map((f) => (
               <label key={f.key} className={`block text-xs uppercase tracking-widest text-ink-soft ${f.type === "textarea" ? "col-span-2" : ""}`}>
                 {f.label}
                 {f.type === "select" ? (
@@ -121,11 +127,18 @@ function EntryPage() {
           {c.wantable && (
             <label className="flex items-center gap-3 rounded-sm border border-ink-soft/40 px-3 py-2.5">
               <input type="checkbox" checked={e.want ?? false} onChange={(ev) => set({ want: ev.target.checked })} className="h-4 w-4 accent-[var(--heather)]" />
-              <span className="font-hand text-xl text-ink">On my want list — I don't have this yet</span>
+               <span className="font-hand text-xl text-ink">Want List</span>
             </label>
           )}
 
           <Section title="My rating"><StarRating value={e.rating} onChange={(rating) => set({ rating })} /></Section>
+
+          {e.category === "favourites" && <Section title="Details">
+            <div className="space-y-3">{[1, 2, 3, 4].map((n) => <div key={n} className="grid grid-cols-2 gap-4">
+              <input aria-label={`Detail ${n} label`} placeholder="Detail name…" value={e.fields[`customLabel${n}`] ?? ""} onChange={(ev) => setField(`customLabel${n}`, ev.target.value)} className="field text-base" />
+              <input aria-label={`Detail ${n} value`} placeholder="Value…" value={e.fields[`customValue${n}`] ?? ""} onChange={(ev) => setField(`customValue${n}`, ev.target.value)} className="field text-base" />
+            </div>)}</div>
+          </Section>}
 
           {c.travel && (
             <>
@@ -141,7 +154,7 @@ function EntryPage() {
                 </div>
               </Section>
 
-              <Section title="On the map">
+               <div ref={mapSection} className="scroll-mt-20"><Section title="On the map">
                 <p className="text-xs text-ink-soft">Tap the map to place a pin, or type coordinates. No location services are used.</p>
                 <div className="overflow-hidden rounded-sm border border-ink-soft/40">
                   <WorldMap pins={[]} selected={e.lat != null && e.lng != null ? { lat: e.lat, lng: e.lng } : undefined} onPick={(lat, lng) => set({ lat, lng })} />
@@ -155,7 +168,7 @@ function EntryPage() {
                   </label>
                   <button type="button" onClick={() => set({ lat: undefined, lng: undefined })} className="pb-2 text-sm text-ink-soft underline">clear</button>
                 </div>
-              </Section>
+               </Section></div>
 
               <Section title="Sound of the place"><AudioRecorder clips={e.audio} onChange={(audio) => set({ audio })} /></Section>
             </>
