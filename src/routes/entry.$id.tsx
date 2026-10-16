@@ -8,7 +8,7 @@ import { getCategory, SENSES } from "@/lib/categories";
 import { blankEntry, db, type Entry } from "@/lib/db";
 
 export const Route = createFileRoute("/entry/$id")({
-  validateSearch: (s: Record<string, unknown>) => ({ cat: typeof s.cat === "string" ? s.cat : undefined }),
+  validateSearch: (s: Record<string, unknown>): { cat?: string } => (typeof s["cat"] === "string" ? { cat: s["cat"] } : {}),
   head: () => ({
     meta: [
       { title: "Journal Page — Bothy" },
@@ -50,7 +50,7 @@ function EntryPage() {
   const save = async () => {
     await db.put({ ...e, title: e.title.trim() || "Untitled", updatedAt: Date.now() });
     setSaved(true);
-    if (isNew) nav({ to: "/entry/$id", params: { id: e.id }, search: { cat: undefined }, replace: true });
+    if (isNew) nav({ to: "/entry/$id", params: { id: e.id }replace: true });
     setIsNew(false);
   };
   const remove = async () => {
@@ -60,7 +60,7 @@ function EntryPage() {
   };
 
   return (
-    <AppShell title={isNew ? `New ${c.singular}` : c.singular} back={<BackLink to="/shelf/$cat" params={{ cat: e.category }} />}>
+    <AppShell title={isNew ? `New ${c.singular}` : c.singular} back={<BackLink cat={e.category} />}>
       <div className="px-3 pb-6">
         <article className="page space-y-6 rounded-sm px-5 py-6">
           <div>

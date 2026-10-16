@@ -5,7 +5,7 @@ import { StarRating } from "./StarRating";
 
 export function EntryCard({ e, showCat }: { e: Entry; showCat?: boolean }) {
   const c = getCategory(e.category);
-  const sub = [e.fields.creator, e.fields.country, e.fields.venue, e.fields.year || e.fields.date].filter(Boolean).join(" · ");
+  const sub = [e.fields["creator"], e.fields["country"], e.fields["venue"], e.fields["year"] || e.fields["date"]].filter(Boolean).join(" · ");
   return (
     <Link to="/entry/$id" params={{ id: e.id }} className="page block rounded-sm p-4 transition-transform active:scale-[0.99]">
       <div className="flex items-start justify-between gap-3">

@@ -10,8 +10,8 @@ export type Entry = {
   rating: number; // 0-10
   notes: string;
   senses: Record<string, string>;
-  lat?: number;
-  lng?: number;
+  lat?: number | undefined;
+  lng?: number | undefined;
   audio: AudioClip[];
   createdAt: number;
   updatedAt: number;

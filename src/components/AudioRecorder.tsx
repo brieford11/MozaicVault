@@ -24,7 +24,7 @@ export function AudioRecorder({ clips, onChange }: { clips: AudioClip[]; onChang
   const [left, setLeft] = useState(MAX);
   const [err, setErr] = useState<string>();
   const mr = useRef<MediaRecorder | null>(null);
-  const timer = useRef<number>();
+  const timer = useRef<number | undefined>(undefined);
   const clipsRef = useRef(clips);
   clipsRef.current = clips;
 

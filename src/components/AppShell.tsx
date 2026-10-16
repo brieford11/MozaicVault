@@ -29,6 +29,7 @@ export function AppShell({ children, title, back }: { children: ReactNode; title
   );
 }
 
-export function BackLink({ to = "/", params }: { to?: string; params?: Record<string, string> }) {
-  return <Link to={to} params={params} className="text-2xl text-primary" aria-label="Back">‹</Link>;
+export function BackLink({ cat }: { cat?: string | undefined }) {
+  const cls = "text-2xl text-primary";
+  return cat ? <Link to="/shelf/$cat" params={{ cat }} className={cls} aria-label="Back">‹</Link> : <Link to="/" className={cls} aria-label="Back">‹</Link>;
 }
