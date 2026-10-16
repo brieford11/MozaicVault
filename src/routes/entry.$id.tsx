@@ -84,7 +84,7 @@ function EntryPage() {
               <label key={f.key} className={`block text-xs uppercase tracking-widest text-ink-soft ${f.type === "textarea" ? "col-span-2" : ""}`}>
                 {f.label}
                 {f.type === "select" ? (
-                  <select value={e.fields[f.key] ?? ""} onChange={(ev) => setField(f.key, ev.target.value)} className="field text-base normal-case tracking-normal">
+                  <select aria-label={f.label} value={e.fields[f.key] ?? ""} onChange={(ev) => setField(f.key, ev.target.value)} className="field text-base normal-case tracking-normal">
                     <option value="">—</option>{f.options?.map((o) => <option key={o}>{o}</option>)}
                   </select>
                 ) : f.type === "combo" ? (

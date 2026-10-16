@@ -15,7 +15,7 @@ describe("local archive export", () => {
   it("preserves every entry field, notes, ten-star ratings and coordinates", async () => {
     const entry: Entry = {
       id: "journey-1", category: "travels", title: "Glencoe",
-      fields: { country: "Scotland" }, rating: 10, notes: "Rain on the roof",
+      fields: { country: "Scotland" }, rating: 7.5, favourite: true, notes: "Rain on the roof",
       senses: { mood: "Peaceful" }, lat: 56.68, lng: -5.1,
       audio: [], createdAt: 100, updatedAt: 200,
     };
