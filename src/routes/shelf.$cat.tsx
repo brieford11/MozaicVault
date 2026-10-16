@@ -57,7 +57,7 @@ function Shelf() {
             <p className="mt-3 font-hand text-2xl text-muted-foreground">an empty drawer, waiting.</p>
           </div>
         )}
-        <div className="space-y-3">{list.map((e) => <EntryCard key={e.id} e={e} />)}</div>
+        <div className="space-y-2">{list.map((e) => <EntryCard key={e.id} e={e} />)}</div>
       </div>
       <Link to="/entry/$id" params={{ id: "new" }} search={{ cat }}
         className="fixed bottom-20 right-[max(1rem,calc(50%-13rem))] z-30 rounded-full bg-primary px-5 py-3 font-display text-lg font-semibold text-primary-foreground shadow-lg">

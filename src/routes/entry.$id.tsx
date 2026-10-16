@@ -112,7 +112,7 @@ function EntryPage() {
                     r.readAsDataURL(file);
                   }} />
                 </label>
-                {e.image && <button type="button" onClick={() => set({ image: undefined })} className="text-sm text-ink-soft underline">remove</button>}
+                {e.image && <button type="button" onClick={() => set({ image: "" })} className="text-sm text-ink-soft underline">remove</button>}
               </div>
               <p className="text-xs text-ink-soft">Stored only on this device.</p>
             </Section>
