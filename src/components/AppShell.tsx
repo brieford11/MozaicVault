@@ -16,7 +16,7 @@ export function AppShell({ children, title, back }: { children: ReactNode; title
           {[
             { to: "/", label: "Cabinet", g: "▤" },
             { to: "/map", label: "Atlas", g: "✧" },
-            { to: "/pinboard", label: "Pinboard", g: "📌" },
+            { to: "/pinboard", label: "Pinboard", g: "⚲" },
           ].map((n) => (
             <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="flex flex-col items-center py-2.5 text-muted-foreground" activeProps={{ className: "text-primary" }}>
               <span className="text-lg leading-none">{n.g}</span>

@@ -19,7 +19,7 @@ export const DRAWERS = [
 const date: FieldDef = { key: "date", label: "Date", type: "date" };
 
 export const CATEGORIES: Category[] = [
-  { id: "books", name: "Books", singular: "Book", glyph: "📖", drawer: "shelf", fields: [
+  { id: "books", name: "Books", singular: "Book", glyph: "❧", drawer: "shelf", fields: [
     { key: "creator", label: "Author" }, { key: "year", label: "Year" }, { key: "format", label: "Edition", placeholder: "Hardback, first printing…" }] },
   { id: "films", name: "Films", singular: "Film", glyph: "🎞", drawer: "shelf", fields: [
     { key: "creator", label: "Director" }, { key: "year", label: "Year" }, { key: "format", label: "Format", type: "select", options: ["Blu-ray", "DVD", "VHS", "4K", "Digital"] }] },

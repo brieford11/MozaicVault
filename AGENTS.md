@@ -8,3 +8,4 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+- All user data is stored only in browser IndexedDB (src/lib/db.ts); no cloud, network APIs, or geolocation — user requires fully local, private storage.
