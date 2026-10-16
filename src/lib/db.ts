@@ -12,6 +12,8 @@ export type Entry = {
   senses: Record<string, string>;
   lat?: number | undefined;
   lng?: number | undefined;
+  want?: boolean; // on the want list — not yet owned/seen
+  image?: string; // cover photo as a data URL, stored locally
   audio: AudioClip[];
   createdAt: number;
   updatedAt: number;
