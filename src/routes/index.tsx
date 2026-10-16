@@ -44,9 +44,9 @@ function Index() {
             <div className="grid grid-cols-2 gap-2">
               {CATEGORIES.filter((c) => c.drawer === d.id).map((c) => (
                 <Link key={c.id} to="/shelf/$cat" params={{ cat: c.id }}
-                  className="label-tag flex items-center justify-between rounded-sm px-3 py-2.5 active:translate-y-px">
-                  <span className="flex items-center gap-2 text-lg font-semibold"><span className="text-ink-soft">{c.glyph}</span>{c.name}</span>
-                  <span className="font-sans text-xs text-ink-soft">{count(c.id)}</span>
+                  className="label-tag flex items-center justify-between gap-2 rounded-sm px-3 py-2.5 active:translate-y-px">
+                  <span className="flex min-w-0 items-center gap-2 text-base font-semibold sm:text-lg"><span className="shrink-0 text-ink-soft">{c.glyph}</span><span>{c.name}</span></span>
+                  <span className="shrink-0 font-sans text-xs text-ink-soft">{count(c.id)}</span>
                 </Link>
               ))}
             </div>
