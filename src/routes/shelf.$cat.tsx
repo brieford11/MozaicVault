@@ -45,6 +45,12 @@ function Shelf() {
             <option value="recent">Recent</option><option value="rating">Rating</option><option value="az">A–Z</option>
           </select>
         </div>
+        {c.wantable && (
+          <button onClick={() => setWantOnly(!wantOnly)}
+            className={`rounded-full border px-3 py-1 font-display text-sm ${wantOnly ? "border-primary bg-secondary text-primary" : "border-border text-muted-foreground"}`}>
+            {wantOnly ? "✦ Want list" : "☆ Want list"}
+          </button>
+        )}
         {entries && list.length === 0 && (
           <div className="py-16 text-center">
             <p className="text-5xl text-muted-foreground/50">{c.glyph}</p>
