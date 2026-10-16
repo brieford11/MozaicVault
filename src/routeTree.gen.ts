@@ -10,33 +10,73 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MapRouteImport } from './routes/map'
+import { Route as PinboardRouteImport } from './routes/pinboard'
+import { Route as EntryIdRouteImport } from './routes/entry.$id'
+import { Route as ShelfCatRouteImport } from './routes/shelf.$cat'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MapRoute = MapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PinboardRoute = PinboardRouteImport.update({
+  id: '/pinboard',
+  path: '/pinboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntryIdRoute = EntryIdRouteImport.update({
+  id: '/entry/$id',
+  path: '/entry/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShelfCatRoute = ShelfCatRouteImport.update({
+  id: '/shelf/$cat',
+  path: '/shelf/$cat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/map': typeof MapRoute
+  '/pinboard': typeof PinboardRoute
+  '/entry/$id': typeof EntryIdRoute
+  '/shelf/$cat': typeof ShelfCatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/map': typeof MapRoute
+  '/pinboard': typeof PinboardRoute
+  '/entry/$id': typeof EntryIdRoute
+  '/shelf/$cat': typeof ShelfCatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/map': typeof MapRoute
+  '/pinboard': typeof PinboardRoute
+  '/entry/$id': typeof EntryIdRoute
+  '/shelf/$cat': typeof ShelfCatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
+  id: '__root__' | '/' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MapRoute: typeof MapRoute
+  PinboardRoute: typeof PinboardRoute
+  EntryIdRoute: typeof EntryIdRoute
+  ShelfCatRoute: typeof ShelfCatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +88,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pinboard': {
+      id: '/pinboard'
+      path: '/pinboard'
+      fullPath: '/pinboard'
+      preLoaderRoute: typeof PinboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entry/$id': {
+      id: '/entry/$id'
+      path: '/entry/$id'
+      fullPath: '/entry/$id'
+      preLoaderRoute: typeof EntryIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shelf/$cat': {
+      id: '/shelf/$cat'
+      path: '/shelf/$cat'
+      fullPath: '/shelf/$cat'
+      preLoaderRoute: typeof ShelfCatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MapRoute: MapRoute,
+  PinboardRoute: PinboardRoute,
+  EntryIdRoute: EntryIdRoute,
+  ShelfCatRoute: ShelfCatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
