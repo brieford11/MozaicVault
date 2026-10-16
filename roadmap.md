@@ -4,3 +4,10 @@
 - [x] Verify exports, sharing fallback, and the updated screen.
 - [x] Add time to concerts, festivals, shows, and events; use the artist as the concert title.
 - [x] Verify event times and concert titles persist locally.
+- [x] Vinyl: signed, pressing/weight/grading dropdowns, colour/variant, cover photo.
+- [x] Music cards show artist on top, title beside year; CD condition dropdown.
+- [x] Want-list flag and shelf filter for ownable categories.
+- [x] Journeys: multiple countries/cities; festivals: acts list + date range.
+- [x] Books: edition combo with custom option, condition dropdown; brews: roast/steep dropdowns + flavour profile.
+- [x] Rename save button; make bottom menu more prominent.
+- [ ] Verify build and spot-check editor/shelf in preview.
