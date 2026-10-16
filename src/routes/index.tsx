@@ -3,14 +3,14 @@ import { AppShell } from "@/components/AppShell";
 import { ArchiveActions } from "@/components/ArchiveActions";
 import { CATEGORIES, DRAWERS } from "@/lib/categories";
 import { useEntries } from "@/lib/db";
-import hero from "@/assets/highlands.jpg";
+import hero from "@/assets/coastal-highlands.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Bothy — A Private Archive of Things & Places" },
+      { title: "Mozaic Vault — A Private Archive of Things & Places" },
       { name: "description", content: "A cozy, private journal for your books, records, films, travels and memories. Stored only on your device." },
-      { property: "og:title", content: "Bothy — A Private Archive of Things & Places" },
+      { property: "og:title", content: "Mozaic Vault — A Private Archive of Things & Places" },
       { property: "og:description", content: "A cozy, private journal for your collections and travels." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -25,11 +25,11 @@ function Index() {
   return (
     <AppShell>
       <section className="relative h-72 overflow-hidden">
-        <img src={hero} alt="Misty highland glen with a lone stone bothy" width={768} height={1024} className="absolute inset-0 h-full w-full object-cover opacity-80" />
+        <img src={hero} alt="Stone cottage on a rocky Scottish Highlands seashore" width={1024} height={1024} className="absolute inset-0 h-full w-full object-cover opacity-80" />
         <div className="absolute inset-0" style={{ background: "var(--gradient-fog)" }} />
         <div className="absolute bottom-6 left-5 right-5">
           <p className="font-hand text-2xl text-primary">the keeping place</p>
-          <h1 className="text-5xl font-semibold leading-none tracking-wide">Bothy</h1>
+          <h1 className="text-4xl font-semibold leading-none">Mozaic Vault</h1>
           <p className="mt-2 text-sm text-muted-foreground">{entries?.length ?? 0} memories kept · on this device only</p>
         </div>
       </section>

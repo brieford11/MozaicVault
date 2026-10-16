@@ -32,7 +32,7 @@ export function ArchiveActions({ entries }: { entries: Entry[] | null }) {
     }
     setSharing(true);
     try {
-      await navigator.share({ files: [file], title: "Bothy archive" });
+      await navigator.share({ files: [file], title: "Mozaic Vault archive" });
       setStatus("Archive shared.");
     } catch (error) {
       if (!(error instanceof DOMException && error.name === "AbortError")) {

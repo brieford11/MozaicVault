@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Heart, MapPin } from "lucide-react";
+import { Bell, Camera, Heart, MapPin, ImagePlus } from "lucide-react";
+import { JourneyPlans } from "@/components/JourneyPlans";
+import { ReminderControls } from "@/components/ReminderControls";
 import { Button } from "@/components/ui/button";
 import { AppShell, BackLink } from "@/components/AppShell";
 import { StarRating } from "@/components/StarRating";
@@ -14,9 +16,9 @@ export const Route = createFileRoute("/entry/$id")({
   validateSearch: (s: Record<string, unknown>): { cat?: string } => (typeof s["cat"] === "string" ? { cat: s["cat"] } : {}),
   head: () => ({
     meta: [
-      { title: "Journal Page — Bothy" },
+      { title: "Journal Page — Mozaic Vault" },
       { name: "description", content: "A single page in your private archive, with notes, ratings and memories." },
-      { property: "og:title", content: "Journal Page — Bothy" },
+      { property: "og:title", content: "Journal Page — Mozaic Vault" },
       { property: "og:description", content: "A page in your private archive." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -41,6 +43,10 @@ function EntryPage() {
   const [e, setE] = useState<Entry | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [showReminder, setShowReminder] = useState(false);
+  const [photoError, setPhotoError] = useState("");
+  const cameraInput = useRef<HTMLInputElement>(null);
+  const ticketInput = useRef<HTMLInputElement>(null);
   const mapSection = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,6 +59,14 @@ function EntryPage() {
   if (!c) return <AppShell title="Page unavailable" back={<BackLink />}><p className="p-6 text-muted-foreground">This category is unavailable.</p></AppShell>;
   const set = (patch: Partial<Entry>) => { setE({ ...e, ...patch }); setSaved(false); };
   const setField = (k: string, v: string) => set({ fields: { ...e.fields, [k]: v } });
+  const readTicket = (file?: File) => {
+    if (!file) return;
+    setPhotoError("");
+    const reader = new FileReader();
+    reader.onload = () => { if (typeof reader.result === "string") set({ ticketImage: reader.result }); };
+    reader.onerror = () => setPhotoError("Could not open that photo. Please try another.");
+    reader.readAsDataURL(file);
+  };
 
   const save = async () => {
     await db.put({ ...e, title: e.title.trim() || "Untitled", updatedAt: Date.now() });
@@ -69,10 +83,12 @@ function EntryPage() {
   return (
     <AppShell title={isNew ? `New ${c.singular}` : c.singular} back={<BackLink cat={e.category} />} actions={<>
       {c.travel && <Button variant="ghost" size="icon" aria-label="Pin this place" title="Pin this place" onClick={() => mapSection.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "center" })}><MapPin /></Button>}
+      {c.reminder && <Button variant="ghost" size="icon" aria-label="Set reminder" title="Set reminder" aria-expanded={showReminder} onClick={() => setShowReminder(!showReminder)}><Bell className={e.reminder ? "fill-primary/20 text-primary" : ""} /></Button>}
       <Button variant="ghost" size="icon" aria-label={e.favourite ? "Remove from favourites" : "Add to favourites"} aria-pressed={e.favourite ?? false} title="Favourites" onClick={() => set({ favourite: !e.favourite })}><Heart className={e.favourite ? "fill-primary text-primary" : ""} /></Button>
     </>}>
       <div className="px-3 pb-6">
         <article className="page space-y-6 rounded-sm px-5 py-6">
+          {c.reminder && showReminder && <Section title="Upcoming reminder"><ReminderControls entry={e} onChange={(reminder) => set({ reminder })} /></Section>}
           <div>
             <p className="stamp inline-block px-2 text-xs text-heather">{c.glyph} {c.singular}</p>
             <input aria-label={c.titleLabel ?? "Title"} value={e.title} onChange={(ev) => set({ title: ev.target.value })} placeholder={`${c.titleLabel ?? "Title"}…`}
@@ -123,6 +139,20 @@ function EntryPage() {
               <p className="text-xs text-ink-soft">Stored only on this device.</p>
             </Section>
           )}
+
+          {c.ticket && <Section title="Ticket stub">
+            {e.ticketImage && <img src={e.ticketImage} alt="Ticket stub" className="max-h-64 w-full rounded-sm object-contain" />}
+            <div className="flex flex-wrap gap-2">
+              <Button variant="ghost" className="border border-ink-soft/40 text-ink" onClick={() => cameraInput.current?.click()}><Camera />Take a photo</Button>
+              <Button variant="ghost" className="border border-ink-soft/40 text-ink" onClick={() => ticketInput.current?.click()}><ImagePlus />Choose photo</Button>
+              {e.ticketImage && <Button variant="ghost" className="text-ink-soft" onClick={() => set({ ticketImage: "" })}>Remove photo</Button>}
+            </div>
+            <input ref={cameraInput} aria-label="Take ticket stub photo" type="file" accept="image/*" capture="environment" className="hidden" onChange={(ev) => { readTicket(ev.target.files?.[0]); ev.target.value = ""; }} />
+            <input ref={ticketInput} aria-label="Choose ticket stub photo" type="file" accept="image/*" className="hidden" onChange={(ev) => { readTicket(ev.target.files?.[0]); ev.target.value = ""; }} />
+            {photoError && <p role="alert" className="text-sm text-destructive">{photoError}</p>}
+          </Section>}
+
+          {e.category === "travels" && <Section title="Upcoming transport"><JourneyPlans legs={e.legs ?? []} onChange={(legs) => set({ legs })} /></Section>}
 
           {c.wantable && (
             <label className="flex items-center gap-3 rounded-sm border border-ink-soft/40 px-3 py-2.5">

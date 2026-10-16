@@ -13,3 +13,6 @@
 - Category-specific entry compatibility is handled by browser-safe helpers in src/lib/entry-details.ts so older records remain editable and list titles match the editor.
 - Maps use bundled world geometry and d3-zoom for local-only pointer-anchored zoom, pan and touch gestures.
 - Favourites aggregates explicitly favourited entries and Other Favourites; the former pinboard path redirects there to preserve old links.
+- Ticket photos, journey transport legs, and reminders are optional entry properties in the existing IndexedDB store so old archives remain readable.
+- Local reminder checks run in the shared root only while the app is open; downloadable ICS alarms provide an explicit user-controlled handoff to a calendar for closed-app reminders.
+- Keep the legacy database name and JSON archive format identifier stable across branding changes to preserve existing user data.

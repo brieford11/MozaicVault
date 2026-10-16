@@ -17,6 +17,8 @@ describe("local archive export", () => {
       id: "journey-1", category: "travels", title: "Glencoe",
       fields: { country: "Scotland" }, rating: 7.5, favourite: true, notes: "Rain on the roof",
       senses: { mood: "Peaceful" }, lat: 56.68, lng: -5.1,
+      ticketImage: "data:image/png;base64,dGlja2V0", reminder: { at: "2026-10-20T12:00" },
+      legs: [{ id: "train", mode: "Train", operator: "ScotRail", number: "123", from: "Glasgow", to: "Oban", departure: "2026-10-20T14:00", arrival: "2026-10-20T17:00", booking: "LOCAL", notes: "Window seat" }],
       audio: [], createdAt: 100, updatedAt: 200,
     };
     const file = await createArchiveFile([entry], new Date("2026-10-16T22:00:00Z"));

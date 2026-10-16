@@ -6,9 +6,9 @@ import { useEntries } from "@/lib/db";
 
 export const Route = createFileRoute("/favourites")({
   head: () => ({ meta: [
-    { title: "Favourites — Bothy" },
+    { title: "Favourites — Mozaic Vault" },
     { name: "description", content: "Your favourite things and memories, kept privately on this device." },
-    { property: "og:title", content: "Favourites — Bothy" },
+    { property: "og:title", content: "Favourites — Mozaic Vault" },
     { property: "og:description", content: "A personal collection of your treasured things and memories." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },

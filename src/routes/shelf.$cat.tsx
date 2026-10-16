@@ -9,9 +9,9 @@ export const Route = createFileRoute("/shelf/$cat")({
   loader: ({ params }) => { const c = getCategory(params.cat); if (!c) throw notFound(); return { name: c.name }; },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.name ?? "Shelf"} — Bothy` },
+      { title: `${loaderData?.name ?? "Shelf"} — Mozaic Vault` },
       { name: "description", content: `Your private ${loaderData?.name ?? ""} collection.` },
-      { property: "og:title", content: `${loaderData?.name ?? "Shelf"} — Bothy` },
+      { property: "og:title", content: `${loaderData?.name ?? "Shelf"} — Mozaic Vault` },
       { property: "og:description", content: "A drawer in your private archive." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -24,7 +24,7 @@ type Sort = "recent" | "rating" | "az";
 
 function Shelf() {
   const { cat } = Route.useParams();
-  const c = getCategory(cat)!;
+  const c = getCategory(cat);
   const { entries } = useEntries();
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<Sort>("recent");
@@ -35,6 +35,7 @@ function Shelf() {
     .filter((e) => !q || JSON.stringify([e.title, e.fields, e.notes]).toLowerCase().includes(q.toLowerCase()))
     .sort((a, b) => sort === "rating" ? b.rating - a.rating : sort === "az" ? a.title.localeCompare(b.title) : b.updatedAt - a.updatedAt);
 
+  if (!c) return null;
   return (
     <AppShell title={c.name} back={<BackLink />}>
       <div className="space-y-3 px-4">

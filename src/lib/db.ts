@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useState } from "react";
 
 export type AudioClip = { id: string; blob: Blob; createdAt: number; duration: number };
+export type JourneyLeg = { id: string; mode: "Flight" | "Train" | "Boat"; operator: string; number: string; from: string; to: string; departure: string; arrival: string; booking: string; notes: string };
+export type Reminder = { at: string; firedAt?: number };
 export type Entry = {
   id: string;
   category: string;
@@ -15,6 +17,9 @@ export type Entry = {
   lng?: number | undefined;
   want?: boolean; // on the want list — not yet owned/seen
   image?: string; // cover photo as a data URL, stored locally
+  ticketImage?: string;
+  legs?: JourneyLeg[];
+  reminder?: Reminder | undefined;
   audio: AudioClip[];
   createdAt: number;
   updatedAt: number;
