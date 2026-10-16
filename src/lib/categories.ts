@@ -1,4 +1,4 @@
-export type FieldDef = { key: string; label: string; placeholder?: string; type?: "text" | "date" | "time" | "select"; options?: string[] };
+export type FieldDef = { key: string; label: string; placeholder?: string; type?: "text" | "date" | "time" | "select" | "combo" | "textarea"; options?: string[] };
 export type Category = {
   id: string;
   name: string;
@@ -8,6 +8,9 @@ export type Category = {
   titleLabel?: string;
   fields: FieldDef[];
   travel?: boolean; // sensory, coordinates, audio
+  wantable?: boolean; // can be marked as "want" (not yet owned/seen)
+  image?: boolean; // cover photo upload
+  music?: boolean; // artist-first card layout
 };
 
 export const DRAWERS = [
