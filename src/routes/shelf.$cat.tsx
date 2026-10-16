@@ -28,8 +28,10 @@ function Shelf() {
   const { entries } = useEntries();
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<Sort>("recent");
+  const [wantOnly, setWantOnly] = useState(false);
   const list = (entries ?? [])
     .filter((e) => e.category === cat)
+    .filter((e) => !wantOnly || e.want)
     .filter((e) => !q || JSON.stringify([e.title, e.fields, e.notes]).toLowerCase().includes(q.toLowerCase()))
     .sort((a, b) => sort === "rating" ? b.rating - a.rating : sort === "az" ? a.title.localeCompare(b.title) : b.updatedAt - a.updatedAt);
 
