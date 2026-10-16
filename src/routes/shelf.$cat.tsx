@@ -13,6 +13,8 @@ export const Route = createFileRoute("/shelf/$cat")({
       { name: "description", content: `Your private ${loaderData?.name ?? ""} collection.` },
       { property: "og:title", content: `${loaderData?.name ?? "Shelf"} — Bothy` },
       { property: "og:description", content: "A drawer in your private archive." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Shelf,
