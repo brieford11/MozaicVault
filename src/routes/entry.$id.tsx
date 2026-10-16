@@ -15,6 +15,8 @@ export const Route = createFileRoute("/entry/$id")({
       { name: "description", content: "A single page in your private archive, with notes, ratings and memories." },
       { property: "og:title", content: "Journal Page — Bothy" },
       { property: "og:description", content: "A page in your private archive." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: EntryPage,

@@ -9,6 +9,8 @@ export const Route = createFileRoute("/pinboard")({
       { name: "description", content: "A corkboard of your favourite cafés, walking paths and beautiful views." },
       { property: "og:title", content: "Third Places Pinboard — Bothy" },
       { property: "og:description", content: "Your corkboard of cafés, paths and views." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Pinboard,

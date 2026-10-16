@@ -12,6 +12,8 @@ export const Route = createFileRoute("/map")({
       { name: "description", content: "A private map of every journey, place and third place you've kept." },
       { property: "og:title", content: "Atlas of Travels — Bothy" },
       { property: "og:description", content: "Your private map of past travels." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Atlas,
