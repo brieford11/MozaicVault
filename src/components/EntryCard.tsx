@@ -12,21 +12,27 @@ export function EntryCard({ e, showCat }: { e: Entry; showCat?: boolean }) {
     ? [e.title, e.fields["year"]].filter(Boolean).join(" · ")
     : [e.category === "concerts" ? undefined : e.fields["creator"], e.fields["country"], e.fields["city"], e.fields["venue"], e.fields["year"] || e.fields["date"], e.fields["time"]].filter(Boolean).join(" · ");
   return (
-    <Link to="/entry/$id" params={{ id: e.id }} className="page block rounded-sm p-4 transition-transform active:scale-[0.99]">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          {showCat && <p className="stamp mb-1 inline-block px-1.5 text-[10px] text-heather">{c?.singular}</p>}
-          {e.want && <p className="stamp mb-1 ml-1 inline-block px-1.5 text-[10px] text-sea">want</p>}
-          <h3 className="truncate text-xl font-semibold leading-tight">{heading}</h3>
-          {sub && <p className="truncate text-sm text-ink-soft">{sub}</p>}
+    <Link to="/entry/$id" params={{ id: e.id }}
+      className="block rounded-md border border-border bg-card px-3 py-2 shadow-[var(--shadow-drawer)] transition-colors active:bg-secondary/40">
+      <div className="flex items-center gap-2.5">
+        {e.image
+          ? <img src={e.image} alt="" className="h-9 w-9 shrink-0 rounded-sm object-cover" />
+          : <span className="w-6 shrink-0 text-center text-lg text-heather/70">{c?.glyph}</span>}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5">
+            <h3 className="truncate font-display text-lg font-semibold leading-tight">{heading}</h3>
+            {e.want && <span className="stamp shrink-0 px-1 text-[9px] text-heather">want</span>}
+          </div>
+          {sub && <p className="truncate text-xs text-muted-foreground">{sub}</p>}
         </div>
-        {e.image ? <img src={e.image} alt="" className="h-14 w-14 shrink-0 rounded-sm object-cover shadow" /> : <span className="text-2xl text-ink-soft/60">{c?.glyph}</span>}
+        <div className="shrink-0">
+          {e.rating > 0 && <StarRating value={e.rating} size="sm" />}
+          <p className="text-right text-[10px] text-muted-foreground">
+            {showCat && c ? `${c.singular} · ` : ""}{e.notes && "✎ "}{e.audio.length > 0 && `♪${e.audio.length}`}
+          </p>
+        </div>
       </div>
-      <div className="mt-2 flex items-center justify-between">
-        {e.rating > 0 ? <StarRating value={e.rating} size="sm" /> : <span />}
-        <span className="text-xs text-ink-soft">{e.notes && "✎ "}{e.audio.length > 0 && `♪${e.audio.length}`}</span>
-      </div>
-      {e.notes && <p className="mt-1 line-clamp-2 font-hand text-lg leading-snug text-ink-soft">{e.notes}</p>}
+      {e.notes && <p className="mt-0.5 truncate pl-8.5 font-hand text-base leading-snug text-muted-foreground">{e.notes}</p>}
     </Link>
   );
 }
