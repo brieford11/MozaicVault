@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FavouritesRouteImport } from './routes/favourites'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as PinboardRouteImport } from './routes/pinboard'
 import { Route as EntryIdRouteImport } from './routes/entry.$id'
@@ -18,6 +19,11 @@ import { Route as ShelfCatRouteImport } from './routes/shelf.$cat'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavouritesRoute = FavouritesRouteImport.update({
+  id: '/favourites',
+  path: '/favourites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MapRoute = MapRouteImport.update({
@@ -43,6 +49,7 @@ const ShelfCatRoute = ShelfCatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/favourites': typeof FavouritesRoute
   '/map': typeof MapRoute
   '/pinboard': typeof PinboardRoute
   '/entry/$id': typeof EntryIdRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/favourites': typeof FavouritesRoute
   '/map': typeof MapRoute
   '/pinboard': typeof PinboardRoute
   '/entry/$id': typeof EntryIdRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/favourites': typeof FavouritesRoute
   '/map': typeof MapRoute
   '/pinboard': typeof PinboardRoute
   '/entry/$id': typeof EntryIdRoute
@@ -65,14 +74,23 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
+  fullPaths:
+    '/' | '/favourites' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
-  id: '__root__' | '/' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
+  to: '/' | '/favourites' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
+  id:
+    | '__root__'
+    | '/'
+    | '/favourites'
+    | '/map'
+    | '/pinboard'
+    | '/entry/$id'
+    | '/shelf/$cat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FavouritesRoute: typeof FavouritesRoute
   MapRoute: typeof MapRoute
   PinboardRoute: typeof PinboardRoute
   EntryIdRoute: typeof EntryIdRoute
@@ -86,6 +104,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favourites': {
+      id: '/favourites'
+      path: '/favourites'
+      fullPath: '/favourites'
+      preLoaderRoute: typeof FavouritesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/map': {
@@ -121,6 +146,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FavouritesRoute: FavouritesRoute,
   MapRoute: MapRoute,
   PinboardRoute: PinboardRoute,
   EntryIdRoute: EntryIdRoute,
