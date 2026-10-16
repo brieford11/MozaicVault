@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
-import { StarRating } from "@/components/StarRating";
 import { useEntries } from "@/lib/db";
 
 export const Route = createFileRoute("/pinboard")({
@@ -41,7 +40,7 @@ function Pinboard() {
         <Link to="/entry/$id" params={{ id: "new" }} search={{ cat: "thirdplaces" }}
           className="block rounded-md bg-primary py-3 text-center font-display text-xl font-semibold text-primary-foreground">+ Pin a third place</Link>
       </div>
-      <div className="hidden"><StarRating value={0} /></div>
+      
     </AppShell>
   );
 }
