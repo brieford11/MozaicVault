@@ -1,10 +1,11 @@
-export type FieldDef = { key: string; label: string; placeholder?: string; type?: "text" | "date" | "select"; options?: string[] };
+export type FieldDef = { key: string; label: string; placeholder?: string; type?: "text" | "date" | "time" | "select"; options?: string[] };
 export type Category = {
   id: string;
   name: string;
   singular: string;
   glyph: string;
   drawer: string;
+  titleLabel?: string;
   fields: FieldDef[];
   travel?: boolean; // sensory, coordinates, audio
 };
@@ -17,6 +18,7 @@ export const DRAWERS = [
 ] as const;
 
 const date: FieldDef = { key: "date", label: "Date", type: "date" };
+const time: FieldDef = { key: "time", label: "Time", type: "time" };
 
 export const CATEGORIES: Category[] = [
   { id: "books", name: "Books", singular: "Book", glyph: "❧", drawer: "shelf", fields: [
@@ -30,14 +32,14 @@ export const CATEGORIES: Category[] = [
   { id: "cassettes", name: "Cassettes", singular: "Tape", glyph: "▭", drawer: "shelf", fields: [
     { key: "creator", label: "Artist" }, { key: "year", label: "Year" }, { key: "format", label: "Side A / B notes" }] },
 
-  { id: "concerts", name: "Concerts", singular: "Concert", glyph: "♫", drawer: "stubs", fields: [
-    { key: "creator", label: "Artist" }, { key: "venue", label: "Venue" }, date] },
+  { id: "concerts", name: "Concerts", singular: "Concert", glyph: "♫", drawer: "stubs", titleLabel: "Artist", fields: [
+    { key: "venue", label: "Venue" }, date, time] },
   { id: "festivals", name: "Festivals", singular: "Festival", glyph: "⛺", drawer: "stubs", fields: [
-    { key: "venue", label: "Location" }, date, { key: "creator", label: "Favourite act" }] },
+    { key: "venue", label: "Location" }, date, time, { key: "creator", label: "Favourite act" }] },
   { id: "shows", name: "Shows", singular: "Show", glyph: "🎭", drawer: "stubs", fields: [
-    { key: "creator", label: "Company / cast" }, { key: "venue", label: "Theatre" }, date] },
+    { key: "creator", label: "Company / cast" }, { key: "venue", label: "Theatre" }, date, time] },
   { id: "events", name: "Events", singular: "Event", glyph: "✦", drawer: "stubs", fields: [
-    { key: "venue", label: "Where" }, date, { key: "creator", label: "With whom" }] },
+    { key: "venue", label: "Where" }, date, time, { key: "creator", label: "With whom" }] },
 
   { id: "travels", name: "Travels", singular: "Journey", glyph: "✈", drawer: "travel", travel: true, fields: [
     { key: "country", label: "Country / region" },

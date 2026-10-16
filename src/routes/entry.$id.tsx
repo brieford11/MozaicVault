@@ -6,6 +6,7 @@ import { AudioRecorder } from "@/components/AudioRecorder";
 import { WorldMap } from "@/components/WorldMap";
 import { getCategory, SENSES } from "@/lib/categories";
 import { blankEntry, db, type Entry } from "@/lib/db";
+import { normalizeEntry } from "@/lib/entry-details";
 
 export const Route = createFileRoute("/entry/$id")({
   validateSearch: (s: Record<string, unknown>): { cat?: string } => (typeof s["cat"] === "string" ? { cat: s["cat"] } : {}),
@@ -41,11 +42,12 @@ function EntryPage() {
 
   useEffect(() => {
     if (id === "new") { setE(blankEntry(cat ?? "favourites")); setIsNew(true); }
-    else db.get(id).then((x) => setE(x ?? null));
+    else db.get(id).then((x) => setE(x ? normalizeEntry(x) : null));
   }, [id, cat]);
 
   if (!e) return <AppShell title="…" back={<BackLink />}><p className="p-6 text-muted-foreground">Opening the page…</p></AppShell>;
-  const c = getCategory(e.category)!;
+  const c = getCategory(e.category);
+  if (!c) return <AppShell title="Page unavailable" back={<BackLink />} />;
   const set = (patch: Partial<Entry>) => { setE({ ...e, ...patch }); setSaved(false); };
   const setField = (k: string, v: string) => set({ fields: { ...e.fields, [k]: v } });
 
@@ -67,7 +69,7 @@ function EntryPage() {
         <article className="page space-y-6 rounded-sm px-5 py-6">
           <div>
             <p className="stamp inline-block px-2 text-xs text-heather">{c.glyph} {c.singular}</p>
-            <input value={e.title} onChange={(ev) => set({ title: ev.target.value })} placeholder="Title…"
+            <input aria-label={c.titleLabel ?? "Title"} value={e.title} onChange={(ev) => set({ title: ev.target.value })} placeholder={`${c.titleLabel ?? "Title"}…`}
               className="field mt-2 font-display text-3xl font-semibold" />
           </div>
 
@@ -77,7 +79,7 @@ function EntryPage() {
                 {f.label}
                 {f.type === "select" ? (
                   <select value={e.fields[f.key] ?? ""} onChange={(ev) => setField(f.key, ev.target.value)} className="field text-base normal-case tracking-normal">
-                    <option value="">—</option>{f.options!.map((o) => <option key={o}>{o}</option>)}
+                    <option value="">—</option>{f.options?.map((o) => <option key={o}>{o}</option>)}
                   </select>
                 ) : (
                   <input type={f.type ?? "text"} value={e.fields[f.key] ?? ""} placeholder={f.placeholder}
