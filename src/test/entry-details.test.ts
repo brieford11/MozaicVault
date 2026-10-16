@@ -4,6 +4,18 @@ import { blankEntry } from "@/lib/db";
 import { getEntryTitle, normalizeEntry } from "@/lib/entry-details";
 
 describe("Event details", () => {
+  it("adds TV shows to the bookshelf with film-like format details and a want list", () => {
+    const category = getCategory("tvshows");
+    expect(category?.drawer).toBe("shelf");
+    expect(category?.wantable).toBe(true);
+    expect(category?.fields.find((field) => field.key === "format")?.options).toEqual(getCategory("films")?.fields.find((field) => field.key === "format")?.options);
+  });
+  for (const category of ["films", "concerts", "festivals", "shows", "events"]) {
+    it(`${category} supports a ticket stub photo`, () => { expect(getCategory(category)?.ticket).toBe(true); });
+  }
+  for (const category of ["concerts", "festivals", "shows", "events", "travels"]) {
+    it(`${category} supports upcoming reminders`, () => { expect(getCategory(category)?.reminder).toBe(true); });
+  }
   it("offers a vinyl disc count dropdown", () => {
     const field = getCategory("vinyl")?.fields.find((f) => f.key === "discCount");
     expect(field?.type).toBe("select");
