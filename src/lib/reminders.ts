@@ -20,13 +20,13 @@ export function calendarReminder(entry: Entry, now = new Date()): string {
   const at = entry.reminder?.at;
   if (!at || !Number.isFinite(Date.parse(at))) throw new Error("Choose a reminder date and time.");
   const planned = entry.legs?.find((leg) => leg.departure)?.departure;
-  const startInput = entry.fields.date ? `${entry.fields.date}T${entry.fields.time || "09:00"}` : planned || at;
+  const startInput = entry.fields["date"] ? `${entry.fields["date"]}T${entry.fields["time"] || "09:00"}` : planned || at;
   const start = new Date(startInput);
   if (!Number.isFinite(start.getTime())) throw new Error("Choose a valid event date.");
   return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Mozaic Vault//Local reminders//EN", "BEGIN:VEVENT",
     `UID:${entry.id}@mozaic-vault.local`, `DTSTAMP:${stamp(now)}`, `DTSTART:${stamp(start)}`,
     `SUMMARY:${escapeCalendar(entry.title || "Upcoming memory")}`,
-    `DESCRIPTION:${escapeCalendar(entry.notes)}`, `LOCATION:${escapeCalendar(entry.fields.venue || entry.fields.city || "")}`,
+    `DESCRIPTION:${escapeCalendar(entry.notes)}`, `LOCATION:${escapeCalendar(entry.fields["venue"] || entry.fields["city"] || "")}`,
     "BEGIN:VALARM", "ACTION:DISPLAY", `TRIGGER;VALUE=DATE-TIME:${stamp(new Date(at))}`,
     `DESCRIPTION:${escapeCalendar(entry.title || "Upcoming memory")}`, "END:VALARM", "END:VEVENT", "END:VCALENDAR", ""].join("\r\n");
 }

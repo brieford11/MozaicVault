@@ -7,7 +7,7 @@ describe("Local journey plans and reminders", () => {
     const flight = { ...blankLeg(), mode: "Flight" as const, number: "BA1450", from: "London", to: "Edinburgh", booking: "MY-BOOKING", departure: "2026-10-20T10:00" };
     const entry = { ...blankEntry("travels"), legs: [flight, { ...blankLeg(), mode: "Train" as const }, { ...blankLeg(), mode: "Boat" as const }] };
     expect(entry.legs.map((leg) => leg.mode)).toEqual(["Flight", "Train", "Boat"]);
-    expect(entry.legs[0].booking).toBe("MY-BOOKING");
+    expect(entry.legs[0]?.booking).toBe("MY-BOOKING");
     expect(new Set(entry.legs.map((leg) => leg.id)).size).toBe(3);
   });
   it("only fires reminders whose time is due and have not fired before", () => {

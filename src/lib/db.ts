@@ -19,7 +19,7 @@ export type Entry = {
   image?: string; // cover photo as a data URL, stored locally
   ticketImage?: string;
   legs?: JourneyLeg[];
-  reminder?: Reminder;
+  reminder?: Reminder | undefined;
   audio: AudioClip[];
   createdAt: number;
   updatedAt: number;
