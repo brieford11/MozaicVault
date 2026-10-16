@@ -11,16 +11,16 @@ export function AppShell({ children, title, back }: { children: ReactNode; title
         </header>
       )}
       <main className="flex-1">{children}</main>
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto grid max-w-md grid-cols-3 text-center font-display text-sm">
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-brass/60 bg-card shadow-[0_-6px_20px_-8px_oklch(0_0_0/0.8)]">
+        <div className="mx-auto grid max-w-md grid-cols-3 gap-1 px-2 pb-1 pt-1.5 text-center font-display">
           {[
             { to: "/", label: "Cabinet", g: "▤" },
             { to: "/map", label: "Atlas", g: "✧" },
             { to: "/pinboard", label: "Pinboard", g: "⚲" },
           ].map((n) => (
-            <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="flex flex-col items-center py-2.5 text-muted-foreground" activeProps={{ className: "text-primary" }}>
-              <span className="text-lg leading-none">{n.g}</span>
-              <span className="mt-1 tracking-wider">{n.label}</span>
+            <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="flex flex-col items-center rounded-md py-2 text-muted-foreground" activeProps={{ className: "bg-secondary text-primary" }}>
+              <span className="text-xl leading-none">{n.g}</span>
+              <span className="mt-1 text-base font-semibold tracking-wider">{n.label}</span>
             </Link>
           ))}
         </div>

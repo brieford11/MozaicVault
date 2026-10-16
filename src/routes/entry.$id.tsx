@@ -75,12 +75,21 @@ function EntryPage() {
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-3">
             {c.fields.map((f) => (
-              <label key={f.key} className="block text-xs uppercase tracking-widest text-ink-soft">
+              <label key={f.key} className={`block text-xs uppercase tracking-widest text-ink-soft ${f.type === "textarea" ? "col-span-2" : ""}`}>
                 {f.label}
                 {f.type === "select" ? (
                   <select value={e.fields[f.key] ?? ""} onChange={(ev) => setField(f.key, ev.target.value)} className="field text-base normal-case tracking-normal">
                     <option value="">—</option>{f.options?.map((o) => <option key={o}>{o}</option>)}
                   </select>
+                ) : f.type === "combo" ? (
+                  <>
+                    <input list={`opts-${f.key}`} value={e.fields[f.key] ?? ""} placeholder={f.placeholder ?? "choose or type your own…"}
+                      onChange={(ev) => setField(f.key, ev.target.value)} className="field text-base normal-case tracking-normal" />
+                    <datalist id={`opts-${f.key}`}>{f.options?.map((o) => <option key={o} value={o} />)}</datalist>
+                  </>
+                ) : f.type === "textarea" ? (
+                  <textarea value={e.fields[f.key] ?? ""} placeholder={f.placeholder} rows={3}
+                    onChange={(ev) => setField(f.key, ev.target.value)} className="field resize-y text-base normal-case tracking-normal" />
                 ) : (
                   <input type={f.type ?? "text"} value={e.fields[f.key] ?? ""} placeholder={f.placeholder}
                     onChange={(ev) => setField(f.key, ev.target.value)} className="field text-base normal-case tracking-normal" />
@@ -88,6 +97,33 @@ function EntryPage() {
               </label>
             ))}
           </div>
+
+          {c.image && (
+            <Section title="Cover photo">
+              {e.image && <img src={e.image} alt="Cover" className="max-h-48 rounded-sm shadow" />}
+              <div className="flex items-center gap-3">
+                <label className="cursor-pointer rounded-md border border-ink-soft/50 px-3 py-2 text-sm text-ink">
+                  {e.image ? "Replace photo" : "Add a photo"}
+                  <input type="file" accept="image/*" className="hidden" onChange={(ev) => {
+                    const file = ev.target.files?.[0];
+                    if (!file) return;
+                    const r = new FileReader();
+                    r.onload = () => set({ image: String(r.result) });
+                    r.readAsDataURL(file);
+                  }} />
+                </label>
+                {e.image && <button type="button" onClick={() => set({ image: undefined })} className="text-sm text-ink-soft underline">remove</button>}
+              </div>
+              <p className="text-xs text-ink-soft">Stored only on this device.</p>
+            </Section>
+          )}
+
+          {c.wantable && (
+            <label className="flex items-center gap-3 rounded-sm border border-ink-soft/40 px-3 py-2.5">
+              <input type="checkbox" checked={e.want ?? false} onChange={(ev) => set({ want: ev.target.checked })} className="h-4 w-4 accent-[var(--heather)]" />
+              <span className="font-hand text-xl text-ink">On my want list — I don't have this yet</span>
+            </label>
+          )}
 
           <Section title="My rating"><StarRating value={e.rating} onChange={(rating) => set({ rating })} /></Section>
 
@@ -135,7 +171,7 @@ function EntryPage() {
 
         <div className="mt-4 flex gap-3">
           <button onClick={save} className="flex-1 rounded-md bg-primary py-3 font-display text-xl font-semibold text-primary-foreground">
-            {saved ? "Kept ✓" : "Keep this page"}
+            {saved ? "Saved ✓" : "Save this page"}
           </button>
           {!isNew && <button onClick={remove} className="rounded-md border border-destructive px-4 text-destructive">Remove</button>}
         </div>
