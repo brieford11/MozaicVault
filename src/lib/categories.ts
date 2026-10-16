@@ -11,6 +11,8 @@ export type Category = {
   wantable?: boolean; // can be marked as "want" (not yet owned/seen)
   image?: boolean; // cover photo upload
   music?: boolean; // artist-first card layout
+  ticket?: boolean;
+  reminder?: boolean;
 };
 
 export const DRAWERS = [
@@ -35,7 +37,10 @@ export const CATEGORIES: Category[] = [
     { key: "seriesCount", label: "Books in series", type: "select", options: COUNTS },
     { key: "seriesCountOther", label: "Number of books", showWhen: { key: "seriesCount", value: "Other" } }] },
   { id: "films", name: "Films", singular: "Film", glyph: "🎞", drawer: "shelf", wantable: true, fields: [
-    { key: "creator", label: "Director" }, { key: "year", label: "Year" }, { key: "format", label: "Format", type: "select", options: ["Blu-ray", "DVD", "VHS", "4K", "Digital"] }] },
+    { key: "creator", label: "Director" }, { key: "year", label: "Year" }, { key: "format", label: "Format", type: "select", options: ["Blu-ray", "DVD", "VHS", "4K", "Digital"] }], ticket: true },
+  { id: "tvshows", name: "TV Shows", singular: "TV Show", glyph: "▣", drawer: "shelf", wantable: true, fields: [
+    { key: "creator", label: "Creator" }, { key: "year", label: "Year" }, { key: "format", label: "Format", type: "select", options: ["Blu-ray", "DVD", "VHS", "4K", "Digital"] },
+    { key: "season", label: "Season" }, { key: "episode", label: "Episode" }] },
   { id: "vinyl", name: "Vinyl", singular: "Record", glyph: "◉", drawer: "shelf", wantable: true, image: true, music: true, fields: [
     { key: "creator", label: "Artist" }, { key: "year", label: "Year" },
     { key: "discCount", label: "Number of discs", type: "select", options: COUNTS },
@@ -51,20 +56,20 @@ export const CATEGORIES: Category[] = [
   { id: "cassettes", name: "Cassettes", singular: "Tape", glyph: "▭", drawer: "shelf", wantable: true, music: true, fields: [
     { key: "creator", label: "Artist" }, { key: "year", label: "Year" }, { key: "format", label: "Side A / B notes" }] },
 
-  { id: "concerts", name: "Concerts", singular: "Concert", glyph: "♫", drawer: "stubs", titleLabel: "Artist", wantable: true, fields: [
+  { id: "concerts", name: "Concerts", singular: "Concert", glyph: "♫", drawer: "stubs", titleLabel: "Artist", wantable: true, ticket: true, reminder: true, fields: [
     { key: "venue", label: "Venue" }, date, time,
     { key: "concertType", label: "Type of concert", type: "select", options: ["Solo artist", "Band", "Acoustic", "Orchestral", "Chamber music", "Choral", "Jazz", "Tribute", "Other"] },
     { key: "concertTypeOther", label: "Other concert type", showWhen: { key: "concertType", value: "Other" } }] },
-  { id: "festivals", name: "Festivals", singular: "Festival", glyph: "⛺", drawer: "stubs", wantable: true, fields: [
+  { id: "festivals", name: "Festivals", singular: "Festival", glyph: "⛺", drawer: "stubs", wantable: true, ticket: true, reminder: true, fields: [
     { key: "venue", label: "Location" }, date, { key: "endDate", label: "Until", type: "date" }, time,
     { key: "acts", label: "Acts / performers", type: "textarea", placeholder: "one per line…" },
     { key: "creator", label: "Favourite act" }] },
-  { id: "shows", name: "Shows", singular: "Show", glyph: "🎭", drawer: "stubs", wantable: true, fields: [
+  { id: "shows", name: "Shows", singular: "Show", glyph: "🎭", drawer: "stubs", wantable: true, ticket: true, reminder: true, fields: [
     { key: "creator", label: "Company / cast" }, { key: "venue", label: "Theatre" }, date, time] },
-  { id: "events", name: "Events", singular: "Event", glyph: "✦", drawer: "stubs", wantable: true, fields: [
+  { id: "events", name: "Events", singular: "Event", glyph: "✦", drawer: "stubs", wantable: true, ticket: true, reminder: true, fields: [
     { key: "venue", label: "Where" }, date, time, { key: "creator", label: "With whom" }] },
 
-  { id: "travels", name: "Travels", singular: "Journey", glyph: "✈", drawer: "travel", travel: true, fields: [
+  { id: "travels", name: "Journeys", singular: "Journey", glyph: "✈", drawer: "travel", travel: true, reminder: true, fields: [
     { key: "country", label: "Countries", placeholder: "Scotland, Japan…" },
     { key: "city", label: "Cities", placeholder: "Edinburgh, Inverness, Kyoto…" },
     date, { key: "endDate", label: "Until", type: "date" }, { key: "creator", label: "Travelled with" }] },
