@@ -1,28 +1,27 @@
-// Firebase initialization. Web API keys are public by design (protected by
-// Firebase Security Rules, not secrecy). Fill the values from your Firebase
-// console: Project settings → General → Your apps → SDK setup and configuration.
+// Firebase initialization. The project id, auth domain, storage bucket and app
+// id are public identifiers; the web API key is served at runtime by a server
+// function that reads it from the secret store, so nothing sensitive lives in
+// this file. Firebase guards access with Security Rules, not with a hidden key.
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
-
-const firebaseConfig = {
-  // Firebase web API keys are publishable (protected by Security Rules).
-  // Paste the apiKey value from the Firebase console here.
-  apiKey: "",
-  authDomain: "mozaic-vault.firebaseapp.com",
-  projectId: "mozaic-vault",
-  storageBucket: "mozaic-vault.firebasestorage.app",
-  messagingSenderId: "1045629930316",
-  appId: "1:1045629930316:web:852d783053c7a291a29de9",
-};
+import { getFirebaseConfig } from "@/lib/firebase-config.functions";
 
 let app: FirebaseApp | null = null;
+let pending: Promise<FirebaseApp> | null = null;
 
-export function isFirebaseConfigured(): boolean {
-  return Boolean(firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.appId);
+// Resolve the Firebase app once, lazily, from the browser. Safe to call many
+// times: the config fetch and initializeApp happen a single time.
+export function getFirebaseApp(): Promise<FirebaseApp> {
+  if (app) return Promise.resolve(app);
+  pending ??= (async () => {
+    const config = await getFirebaseConfig();
+    if (!config.apiKey) {
+      throw new Error("Firebase web API key is not saved yet — add it in Project Settings → Secrets as GOOGLE_API_KEY");
+    }
+    app = getApps().length ? getApp() : initializeApp(config);
+    return app;
+  })();
+  return pending;
 }
 
-export function getFirebaseApp(): FirebaseApp {
-  if (!isFirebaseConfigured()) {
-    throw new Error("Firebase is not configured yet — add your project config values in src/lib/firebase.ts");
-  }
-  return app ?? (app = getApps().length ? getApp() : initializeApp(firebaseConfig));
-}
+// Non-secret identifiers, used for status messages and diagnostics.
+export const firebaseProjectId = "mozaic-vault";
