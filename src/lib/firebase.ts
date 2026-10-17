@@ -4,12 +4,14 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: import.meta.env["VITE_FIREBASE_API_KEY"] ?? "",
-  authDomain: import.meta.env["VITE_FIREBASE_AUTH_DOMAIN"] ?? "",
-  projectId: import.meta.env["VITE_FIREBASE_PROJECT_ID"] ?? "",
-  storageBucket: import.meta.env["VITE_FIREBASE_STORAGE_BUCKET"] ?? "",
-  messagingSenderId: import.meta.env["VITE_FIREBASE_MESSAGING_SENDER_ID"] ?? "",
-  appId: import.meta.env["VITE_FIREBASE_APP_ID"] ?? "",
+  // Firebase web API keys are publishable (protected by Security Rules).
+  // Paste the apiKey value from the Firebase console here.
+  apiKey: "",
+  authDomain: "mozaic-vault.firebaseapp.com",
+  projectId: "mozaic-vault",
+  storageBucket: "mozaic-vault.firebasestorage.app",
+  messagingSenderId: "1045629930316",
+  appId: "1:1045629930316:web:852d783053c7a291a29de9",
 };
 
 let app: FirebaseApp | null = null;
