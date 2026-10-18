@@ -20,3 +20,7 @@
 - [x] Books: edition combo with custom option, condition dropdown; brews: roast/steep dropdowns + flavour profile.
 - [x] Rename save button; make bottom menu more prominent.
 - [x] Verify build and spot-check editor/shelf in preview.
+- [ ] Add genres and category-specific Watch / Listen Lists.
+- [ ] Add local page visibility controls and cozier icons.
+- [ ] Add export and share format and scope choices.
+- [ ] Verify archive updates and local persistence.
