@@ -1,4 +1,36 @@
 import type { Entry } from "./db";
+import { getCategory, getListLabel } from "./categories";
+import { getEntryTitle } from "./entry-details";
+
+export type ExportFormat = "json" | "csv" | "text";
+
+export function selectArchiveEntries(entries: Entry[], scope: string): Entry[] {
+  return scope === "all" ? entries : scope === "favourites" ? entries.filter((entry) => entry.favourite || entry.category === "favourites") : entries.filter((entry) => entry.category === scope);
+}
+
+export function journalText(entries: Entry[]): string {
+  return entries.map((entry) => [
+    getEntryTitle(entry) || "Untitled",
+    getCategory(entry.category)?.name ?? entry.category,
+    ...(entry.want ? [getListLabel(entry.category)] : []),
+    `Rating: ${entry.rating}/10`,
+    ...Object.entries(entry.fields).filter(([, value]) => value).map(([key, value]) => `${key}: ${value}`),
+    ...Object.entries(entry.senses).filter(([, value]) => value).map(([key, value]) => `${key}: ${value}`),
+    ...(entry.lat != null && entry.lng != null ? [`Coordinates: ${entry.lat}, ${entry.lng}`] : []),
+    ...(entry.reminder ? [`Reminder: ${entry.reminder.at}`] : []),
+    ...(entry.legs ?? []).map((leg) => `${leg.mode}: ${leg.from} → ${leg.to} · ${leg.departure}\n${leg.operator} ${leg.number} · ${leg.arrival}\n${leg.booking}\n${leg.notes}`),
+    entry.notes,
+  ].filter(Boolean).join("\n")).join("\n\n———\n\n");
+}
+
+export async function createExportFile(entries: Entry[], format: ExportFormat, now = new Date()): Promise<File> {
+  if (format === "json") return createArchiveFile(entries, now);
+  const name = `mozaic-vault-${now.toISOString().slice(0, 10)}`;
+  if (format === "text") return new File([journalText(entries)], `${name}.txt`, { type: "text/plain" });
+  const quote = (value: unknown) => `"${String(value).replace(/"/g, '""')}"`;
+  const rows = [["Title", "Category", "Rating", "List", "Notes", "Details", "Sensory mood", "Latitude", "Longitude", "Reminder", "Transport"], ...entries.map((entry) => [getEntryTitle(entry), entry.category, entry.rating, entry.want ? getListLabel(entry.category) : "", entry.notes, JSON.stringify(entry.fields), JSON.stringify(entry.senses), entry.lat ?? "", entry.lng ?? "", entry.reminder?.at ?? "", JSON.stringify(entry.legs ?? [])])];
+  return new File(["\uFEFF" + rows.map((row) => row.map(quote).join(",")).join("\r\n")], `${name}.csv`, { type: "text/csv" });
+}
 
 function audioDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
