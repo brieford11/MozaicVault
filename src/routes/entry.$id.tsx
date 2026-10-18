@@ -85,7 +85,7 @@ function EntryPage() {
     <AppShell title={isNew ? `New ${c.singular}` : c.singular} back={<BackLink cat={e.category} />} actions={<>
       {c.travel && <Button variant="ghost" size="icon" aria-label="Pin this place" title="Pin this place" onClick={() => mapSection.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "center" })}><MapPin /></Button>}
       {c.reminder && <Button variant="ghost" size="icon" aria-label="Set reminder" title="Set reminder" aria-expanded={showReminder} onClick={() => setShowReminder(!showReminder)}><Bell className={e.reminder ? "fill-primary/20 text-primary" : ""} /></Button>}
-      <Button variant="ghost" size="icon" aria-label={e.favourite ? "Remove from favourites" : "Add to favourites"} aria-pressed={e.favourite ?? false} title="Favourites" onClick={() => set({ favourite: !e.favourite })}><Heart className={e.favourite ? "fill-primary text-primary" : ""} /></Button>
+      <Button variant="ghost" size="icon" aria-label={e.favourite ? "Remove from favorites" : "Add to favorites"} aria-pressed={e.favourite ?? false} title="Favorites" onClick={() => set({ favourite: !e.favourite })}><Heart className={e.favourite ? "fill-primary text-primary" : ""} /></Button>
     </>}>
       <div className="px-3 pb-6">
         <article className="page space-y-6 rounded-sm px-5 py-6">
@@ -162,7 +162,7 @@ function EntryPage() {
             </label>
           )}
 
-          <Section title="My rating"><StarRating value={e.rating} onChange={(rating) => set({ rating })} /></Section>
+          {e.category !== "health" && <Section title="My rating"><StarRating value={e.rating} onChange={(rating) => set({ rating })} /></Section>}
 
           {e.category === "favourites" && <Section title="Details">
             <div className="space-y-3">{[1, 2, 3, 4].map((n) => <div key={n} className="grid grid-cols-2 gap-4">
@@ -176,10 +176,14 @@ function EntryPage() {
               <Section title="The sensory mood">
                 <div className="space-y-2">
                   {SENSES.map((s) => (
-                    <label key={s.key} className="flex items-baseline gap-3">
+                    <label key={s.key} className="flex min-w-0 items-start gap-3">
                       <span className="w-16 shrink-0 font-display text-base italic text-ink-soft">{s.label}</span>
-                      <input value={e.senses[s.key] ?? ""} onChange={(ev) => set({ senses: { ...e.senses, [s.key]: ev.target.value } })}
-                        className="field font-hand text-xl" />
+                      <textarea aria-label={s.label} rows={2} value={e.senses[s.key] ?? ""} onChange={(ev) => {
+                        set({ senses: { ...e.senses, [s.key]: ev.target.value } });
+                        ev.target.style.height = "auto";
+                        ev.target.style.height = `${ev.target.scrollHeight}px`;
+                      }} ref={(node) => { if (node) { node.style.height = "auto"; node.style.height = `${node.scrollHeight}px`; } }}
+                        className="field sensory-line min-w-0 flex-1 resize-y font-hand text-xl" />
                     </label>
                   ))}
                 </div>

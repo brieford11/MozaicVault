@@ -8,7 +8,7 @@ export function AppShell({ children, title, back, actions }: { children: ReactNo
       {title && (
         <header className="sticky top-0 z-20 flex items-center gap-3 bg-background/85 px-4 py-3 backdrop-blur">
           {back}
-          <h1 className="truncate text-2xl font-semibold tracking-wide">{title}</h1>
+           <h1 className="min-w-0 break-words text-2xl font-semibold">{title}</h1>
           {actions && <div className="ml-auto flex shrink-0 gap-1">{actions}</div>}
         </header>
       )}
@@ -18,7 +18,7 @@ export function AppShell({ children, title, back, actions }: { children: ReactNo
           {[
             { to: "/", label: "Cabinet", g: "cabinet" },
             { to: "/map", label: "Atlas", g: "atlas" },
-            { to: "/favourites", label: "Favourites", g: "favourites" },
+            { to: "/favourites", label: "Favorites", g: "favourites" },
           ].map((n) => (
             <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="flex flex-col items-center rounded-md py-2 text-muted-foreground" activeProps={{ className: "bg-secondary text-primary" }}>
               <ArchiveIcon category={n.g} className="h-8 w-8 border-current/20 bg-current/5 text-current" />

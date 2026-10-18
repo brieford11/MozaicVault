@@ -66,7 +66,7 @@ export function WorldMap({ pins, onPick, onPinClick, selected }: {
       {pins.map((p) => {
         const [x, y] = pt(p.lat, p.lng);
         return (
-          <g key={p.id} transform={`translate(${x},${y}) scale(${1 / view.k})`} onClick={(e) => { e.stopPropagation(); onPinClick?.(p.id); }} className="cursor-pointer">
+          <g key={p.id} role="button" tabIndex={0} aria-label={`Show city: ${p.label}`} transform={`translate(${x},${y}) scale(${1 / view.k})`} onClick={(e) => { e.stopPropagation(); onPinClick?.(p.id); }} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onPinClick?.(p.id); } }} className="cursor-pointer">
             <title>{p.label}</title>
             <circle r={9} className="fill-transparent" />
             <circle r={4.5} className={p.tone === "heather" ? "fill-heather" : p.tone === "moss" ? "fill-moss" : "fill-brass"} stroke="currentColor" strokeWidth={1} />
