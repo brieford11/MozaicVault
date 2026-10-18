@@ -20,7 +20,13 @@
 - [x] Books: edition combo with custom option, condition dropdown; brews: roast/steep dropdowns + flavour profile.
 - [x] Rename save button; make bottom menu more prominent.
 - [x] Verify build and spot-check editor/shelf in preview.
-- [ ] Add genres and category-specific Watch / Listen Lists.
-- [ ] Add local page visibility controls and cozier icons.
-- [ ] Add export and share format and scope choices.
-- [ ] Verify archive updates and local persistence.
+- [x] Add genres and category-specific Watch / Listen Lists.
+- [x] Add local page visibility controls and cozier icons.
+- [x] Add export and share format and scope choices.
+- [ ] Wrap sensory mood lines.
+- [ ] Add Hearth doctor's appointment and symptom tracker.
+- [ ] Customize cabinet titles, deep-pastel colors and order locally.
+- [ ] Add bookshelf wallpaper with mosaic accents and separate shelves.
+- [ ] Show recorded cities on map pin click without navigating.
+- [ ] Rename Social Spaces and use American spelling.
+- [ ] Verify requested flows and local persistence.
