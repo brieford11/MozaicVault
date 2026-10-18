@@ -8,7 +8,8 @@ import { AppShell, BackLink } from "@/components/AppShell";
 import { StarRating } from "@/components/StarRating";
 import { AudioRecorder } from "@/components/AudioRecorder";
 import { WorldMap } from "@/components/WorldMap";
-import { getCategory, SENSES } from "@/lib/categories";
+import { ArchiveIcon } from "@/components/ArchiveIcon";
+import { getCategory, getListLabel, SENSES } from "@/lib/categories";
 import { blankEntry, db, type Entry } from "@/lib/db";
 import { normalizeEntry } from "@/lib/entry-details";
 
@@ -90,7 +91,7 @@ function EntryPage() {
         <article className="page space-y-6 rounded-sm px-5 py-6">
           {c.reminder && showReminder && <Section title="Upcoming reminder"><ReminderControls entry={e} onChange={(reminder) => set({ reminder })} /></Section>}
           <div>
-            <p className="stamp inline-block px-2 text-xs text-heather">{c.glyph} {c.singular}</p>
+            <p className="inline-flex items-center gap-2 font-display text-sm text-heather"><ArchiveIcon category={c.id} className="h-8 w-8 border-ink-soft/30 bg-ink/5 text-heather" />{c.singular}</p>
             <input aria-label={c.titleLabel ?? "Title"} value={e.title} onChange={(ev) => set({ title: ev.target.value })} placeholder={`${c.titleLabel ?? "Title"}…`}
               className="field mt-2 font-display text-3xl font-semibold" />
           </div>
@@ -157,7 +158,7 @@ function EntryPage() {
           {c.wantable && (
             <label className="flex items-center gap-3 rounded-sm border border-ink-soft/40 px-3 py-2.5">
               <input type="checkbox" checked={e.want ?? false} onChange={(ev) => set({ want: ev.target.checked })} className="h-4 w-4 accent-[var(--heather)]" />
-               <span className="font-hand text-xl text-ink">Want List</span>
+               <span className="font-hand text-xl text-ink">{getListLabel(c.id)}</span>
             </label>
           )}
 

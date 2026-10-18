@@ -2,7 +2,9 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell, BackLink } from "@/components/AppShell";
 import { EntryCard } from "@/components/EntryCard";
-import { getCategory } from "@/lib/categories";
+import { Button } from "@/components/ui/button";
+import { ArchiveIcon } from "@/components/ArchiveIcon";
+import { getCategory, getListLabel } from "@/lib/categories";
 import { useEntries } from "@/lib/db";
 
 export const Route = createFileRoute("/shelf/$cat")({
@@ -47,14 +49,13 @@ function Shelf() {
           </select>
         </div>
         {c.wantable && (
-          <button onClick={() => setWantOnly(!wantOnly)}
-            className={`rounded-full border px-3 py-1 font-display text-sm ${wantOnly ? "border-primary bg-secondary text-primary" : "border-border text-muted-foreground"}`}>
-            {wantOnly ? "✦ Want list" : "☆ Want list"}
-          </button>
+          <Button variant="outline" size="sm" aria-pressed={wantOnly} onClick={() => setWantOnly(!wantOnly)} className={wantOnly ? "border-primary bg-secondary text-primary" : "text-muted-foreground"}>
+            {getListLabel(c.id)}
+          </Button>
         )}
         {entries && list.length === 0 && (
           <div className="py-16 text-center">
-            <p className="text-5xl text-muted-foreground/50">{c.glyph}</p>
+            <ArchiveIcon category={c.id} className="mx-auto h-14 w-14" />
             <p className="mt-3 font-hand text-2xl text-muted-foreground">an empty drawer, waiting.</p>
           </div>
         )}
