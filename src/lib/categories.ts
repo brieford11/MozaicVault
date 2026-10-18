@@ -29,7 +29,7 @@ const GRADING = ["Mint (M)", "Near Mint (NM)", "Very Good+ (VG+)", "Very Good (V
 const CONDITION = ["Like new", "Very good", "Good", "Worn", "Damaged"];
 const COUNTS = [...Array.from({ length: 30 }, (_, i) => String(i + 1)), "40", "50", "100", "Other"];
 
-export const CATEGORIES: Category[] = [
+const BASE_CATEGORIES: Category[] = [
   { id: "books", name: "Books", singular: "Book", glyph: "❧", drawer: "shelf", wantable: true, fields: [
     { key: "creator", label: "Author" }, { key: "year", label: "Year" },
     { key: "format", label: "Edition", type: "combo", options: ["Hardback", "Paperback", "First edition", "Signed edition", "Box set", "E-book", "Audiobook"] },
@@ -99,3 +99,15 @@ export const SENSES = [
 ];
 
 export const getCategory = (id: string) => CATEGORIES.find((c) => c.id === id);
+
+const BOOK_GENRES = ["Literary fiction", "Fantasy", "Science fiction", "Mystery", "Thriller", "Romance", "Historical fiction", "Horror", "Poetry", "Memoir", "Non-fiction", "Other"];
+const SCREEN_GENRES = ["Drama", "Comedy", "Documentary", "Thriller", "Mystery", "Horror", "Romance", "Science fiction", "Fantasy", "Animation", "Action", "Other"];
+const MUSIC_GENRES = ["Rock", "Pop", "Indie", "Folk", "Jazz", "Classical", "Electronic", "Ambient", "Hip-hop", "Soul", "Metal", "Country", "Other"];
+export const CATEGORIES: Category[] = BASE_CATEGORIES.map((category) => {
+  const genres = category.id === "books" ? BOOK_GENRES : ["films", "tvshows"].includes(category.id) ? SCREEN_GENRES : category.music || ["concerts", "festivals"].includes(category.id) ? MUSIC_GENRES : category.id === "shows" ? ["Musical", "Drama", "Comedy", "Opera", "Dance", "Other"] : null;
+  return genres ? { ...category, fields: [...category.fields, { key: "genre", label: "Genre", type: "select" as const, options: genres }, { key: "genreOther", label: "Other genre", showWhen: { key: "genre", value: "Other" } }] } : category;
+});
+
+export function getListLabel(category: string): "Watch List" | "Listen List" | "Want List" {
+  return ["films", "tvshows"].includes(category) ? "Watch List" : ["vinyl", "cds", "cassettes"].includes(category) ? "Listen List" : "Want List";
+}

@@ -30,10 +30,13 @@ const STORE = "entries";
 
 function open(): Promise<IDBDatabase> {
   return new Promise((res, rej) => {
-    const r = indexedDB.open(DB, 1);
+    const r = indexedDB.open(DB, 2);
     r.onupgradeneeded = () => {
-      const s = r.result.createObjectStore(STORE, { keyPath: "id" });
-      s.createIndex("category", "category");
+      if (!r.result.objectStoreNames.contains(STORE)) {
+        const s = r.result.createObjectStore(STORE, { keyPath: "id" });
+        s.createIndex("category", "category");
+      }
+      if (!r.result.objectStoreNames.contains("preferences")) r.result.createObjectStore("preferences");
     };
     r.onsuccess = () => res(r.result);
     r.onerror = () => rej(r.error);
@@ -55,6 +58,26 @@ export const db = {
   put: (e: Entry) => tx("readwrite", (s) => s.put(e)),
   del: (id: string) => tx("readwrite", (s) => s.delete(id)),
 };
+
+export async function readHiddenPages(): Promise<string[]> {
+  const database = await open();
+  return new Promise((resolve, reject) => {
+    const request = database.transaction("preferences").objectStore("preferences").get("hiddenPages");
+    request.onsuccess = () => resolve(Array.isArray(request.result) ? request.result : []);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+export async function writeHiddenPages(pages: string[]): Promise<void> {
+  const database = await open();
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction("preferences", "readwrite");
+    transaction.objectStore("preferences").put(pages, "hiddenPages");
+    transaction.oncomplete = () => { window.dispatchEvent(new Event("archive-preferences")); resolve(); };
+    transaction.onerror = () => reject(transaction.error);
+    transaction.onabort = () => reject(transaction.error);
+  });
+}
 
 export function blankEntry(category: string): Entry {
   const now = Date.now();

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { Entry } from "@/lib/db";
-import { getCategory } from "@/lib/categories";
+import { ArchiveIcon } from "./ArchiveIcon";
+import { getCategory, getListLabel } from "@/lib/categories";
 import { getEntryTitle } from "@/lib/entry-details";
 import { StarRating } from "./StarRating";
 
@@ -17,11 +18,11 @@ export function EntryCard({ e, showCat }: { e: Entry; showCat?: boolean }) {
       <div className="flex items-center gap-2.5">
         {e.image
           ? <img src={e.image} alt="" className="h-9 w-9 shrink-0 rounded-sm object-cover" />
-          : <span className="w-6 shrink-0 text-center text-lg text-heather/70">{c?.glyph}</span>}
+          : <ArchiveIcon category={e.category} className="h-8 w-8" />}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
             <h3 className="truncate font-display text-lg font-semibold leading-tight">{heading}</h3>
-            {e.want && <span className="stamp shrink-0 px-1 text-[9px] text-heather">want</span>}
+            {e.want && <span className="stamp shrink-0 px-1 text-[9px] text-primary">{getListLabel(e.category).replace(" List", "")}</span>}
           </div>
           {sub && <p className="truncate text-xs text-muted-foreground">{sub}</p>}
         </div>

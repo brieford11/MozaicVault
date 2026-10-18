@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { ArchiveActions } from "@/components/ArchiveActions";
+import { ArchiveIcon } from "@/components/ArchiveIcon";
+import { PageVisibility } from "@/components/PageVisibility";
+import { usePageVisibility } from "@/lib/page-visibility";
 import { CATEGORIES, DRAWERS } from "@/lib/categories";
 import { useEntries } from "@/lib/db";
 import hero from "@/assets/coastal-highlands.jpg";
@@ -21,12 +24,14 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { entries } = useEntries();
+  const { hidden } = usePageVisibility();
   const count = (id: string) => entries?.filter((e) => e.category === id).length ?? 0;
   return (
     <AppShell>
       <section className="relative h-72 overflow-hidden">
         <img src={hero} alt="Stone cottage on a rocky Scottish Highlands seashore" width={1024} height={1024} className="absolute inset-0 h-full w-full object-cover opacity-80" />
         <div className="absolute inset-0" style={{ background: "var(--gradient-fog)" }} />
+        <div className="absolute right-4 top-4"><PageVisibility /></div>
         <div className="absolute bottom-6 left-5 right-5">
           <p className="font-hand text-2xl text-primary">the keeping place</p>
           <h1 className="text-4xl font-semibold leading-none">Mozaic Vault</h1>
@@ -35,17 +40,17 @@ function Index() {
       </section>
 
       <div className="space-y-6 px-4 pt-2">
-        {DRAWERS.map((d) => (
+        {DRAWERS.filter((d) => CATEGORIES.some((c) => c.drawer === d.id && !hidden.includes(c.id))).map((d) => (
           <section key={d.id} className="drawer rounded-md p-3">
             <div className="mb-3 flex items-baseline justify-between px-1">
               <h2 className="text-2xl font-semibold">{d.name}</h2>
               <span className="font-display text-sm italic text-muted-foreground">{d.note}</span>
             </div>
             <div className="grid grid-cols-2 gap-2">
-              {CATEGORIES.filter((c) => c.drawer === d.id).map((c) => (
+              {CATEGORIES.filter((c) => c.drawer === d.id && !hidden.includes(c.id)).map((c) => (
                 <Link key={c.id} to="/shelf/$cat" params={{ cat: c.id }}
                   className="label-tag flex items-center justify-between gap-2 rounded-sm px-3 py-2.5 active:translate-y-px">
-                  <span className="flex min-w-0 items-center gap-2 text-base font-semibold sm:text-lg"><span className="shrink-0 text-ink-soft">{c.glyph}</span><span>{c.name}</span></span>
+                  <span className="flex min-w-0 items-center gap-2 text-base font-semibold sm:text-lg"><ArchiveIcon category={c.id} className="h-8 w-8 border-ink-soft/25 bg-ink/5 text-heather" /><span>{c.name}</span></span>
                   <span className="shrink-0 font-sans text-xs text-ink-soft">{count(c.id)}</span>
                 </Link>
               ))}

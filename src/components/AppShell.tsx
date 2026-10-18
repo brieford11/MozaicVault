@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { ArchiveIcon } from "./ArchiveIcon";
 import type { ReactNode } from "react";
 
 export function AppShell({ children, title, back, actions }: { children: ReactNode; title?: string; back?: ReactNode; actions?: ReactNode }) {
@@ -12,15 +13,15 @@ export function AppShell({ children, title, back, actions }: { children: ReactNo
         </header>
       )}
       <main className="flex-1">{children}</main>
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-brass/60 bg-card shadow-[0_-6px_20px_-8px_oklch(0_0_0/0.8)]">
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-brass/60 bg-card shadow-[var(--shadow-drawer)]">
         <div className="mx-auto grid max-w-md grid-cols-3 gap-1 px-2 pb-1 pt-1.5 text-center font-display">
           {[
-            { to: "/", label: "Cabinet", g: "▤" },
-            { to: "/map", label: "Atlas", g: "✧" },
-            { to: "/favourites", label: "Favourites", g: "♡" },
+            { to: "/", label: "Cabinet", g: "cabinet" },
+            { to: "/map", label: "Atlas", g: "atlas" },
+            { to: "/favourites", label: "Favourites", g: "favourites" },
           ].map((n) => (
             <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="flex flex-col items-center rounded-md py-2 text-muted-foreground" activeProps={{ className: "bg-secondary text-primary" }}>
-              <span className="text-xl leading-none">{n.g}</span>
+              <ArchiveIcon category={n.g} className="h-8 w-8 border-current/20 bg-current/5 text-current" />
               <span className="mt-1 text-base font-semibold tracking-wider">{n.label}</span>
             </Link>
           ))}
