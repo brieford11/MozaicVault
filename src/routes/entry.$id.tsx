@@ -106,15 +106,15 @@ function EntryPage() {
                   </select>
                 ) : f.type === "combo" ? (
                   <>
-                    <input list={`opts-${f.key}`} value={e.fields[f.key] ?? ""} placeholder={f.placeholder ?? "choose or type your own…"}
+                    <input aria-label={f.label} list={`opts-${f.key}`} value={e.fields[f.key] ?? ""} placeholder={f.placeholder ?? "choose or type your own…"}
                       onChange={(ev) => setField(f.key, ev.target.value)} className="field text-base normal-case tracking-normal" />
                     <datalist id={`opts-${f.key}`}>{f.options?.map((o) => <option key={o} value={o} />)}</datalist>
                   </>
                 ) : f.type === "textarea" ? (
-                  <textarea value={e.fields[f.key] ?? ""} placeholder={f.placeholder} rows={3}
+                  <textarea aria-label={f.label} value={e.fields[f.key] ?? ""} placeholder={f.placeholder} rows={3}
                     onChange={(ev) => setField(f.key, ev.target.value)} className="field resize-y text-base normal-case tracking-normal" />
                 ) : (
-                  <input type={f.type ?? "text"} value={e.fields[f.key] ?? ""} placeholder={f.placeholder}
+                  <input aria-label={f.label} type={f.type ?? "text"} value={e.fields[f.key] ?? ""} placeholder={f.placeholder}
                     onChange={(ev) => setField(f.key, ev.target.value)} className="field text-base normal-case tracking-normal" />
                 )}
               </label>
