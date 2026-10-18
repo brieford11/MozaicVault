@@ -79,6 +79,28 @@ export async function writeHiddenPages(pages: string[]): Promise<void> {
   });
 }
 
+export async function readPreference<T>(key: string): Promise<T | undefined> {
+  const database = await open();
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction("preferences");
+    const request = transaction.objectStore("preferences").get(key);
+    request.onsuccess = () => resolve(request.result as T | undefined);
+    request.onerror = () => reject(request.error);
+    transaction.oncomplete = () => database.close();
+  });
+}
+
+export async function writePreference<T>(key: string, value: T): Promise<void> {
+  const database = await open();
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction("preferences", "readwrite");
+    transaction.objectStore("preferences").put(value, key);
+    transaction.oncomplete = () => { database.close(); window.dispatchEvent(new Event("archive-preferences")); resolve(); };
+    transaction.onerror = () => reject(transaction.error);
+    transaction.onabort = () => reject(transaction.error);
+  });
+}
+
 export function blankEntry(category: string): Entry {
   const now = Date.now();
   return { id: crypto.randomUUID(), category, title: "", fields: {}, rating: 0, notes: "", senses: {}, audio: [], createdAt: now, updatedAt: now };

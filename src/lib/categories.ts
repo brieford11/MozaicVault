@@ -20,6 +20,7 @@ export const DRAWERS = [
   { id: "stubs", name: "Ticket Stubs", note: "nights to remember" },
   { id: "travel", name: "Travel Journal", note: "roads & resting places" },
   { id: "curios", name: "Curiosities", note: "small treasured things" },
+  { id: "hearth", name: "Hearth", note: "care & everyday wellbeing" },
 ] as const;
 
 const date: FieldDef = { key: "date", label: "Date", type: "date" };
@@ -45,9 +46,9 @@ const BASE_CATEGORIES: Category[] = [
     { key: "creator", label: "Artist" }, { key: "year", label: "Year" },
     { key: "discCount", label: "Number of discs", type: "select", options: COUNTS },
     { key: "discCountOther", label: "Disc count", showWhen: { key: "discCount", value: "Other" } },
-    { key: "format", label: "Pressing", type: "select", options: ["Standard", "First pressing", "Reissue", "Limited edition", "Picture disc", "Coloured pressing", "Box set"] },
+    { key: "format", label: "Pressing", type: "select", options: ["Standard", "First pressing", "Reissue", "Limited edition", "Picture disc", "Colored pressing", "Box set"] },
     { key: "weight", label: "Weight", type: "select", options: ["120g", "140g", "180g", "200g", "Other"] },
-    { key: "variant", label: "Colour / variant", placeholder: "smoke marble, splatter…" },
+    { key: "variant", label: "Color / variant", placeholder: "smoke marble, splatter…" },
     { key: "grading", label: "Grading", type: "select", options: GRADING },
     { key: "signed", label: "Signed?", type: "select", options: ["Signed", "Not signed"] }] },
   { id: "cds", name: "CDs", singular: "CD", glyph: "◎", drawer: "shelf", wantable: true, music: true, fields: [
@@ -63,7 +64,7 @@ const BASE_CATEGORIES: Category[] = [
   { id: "festivals", name: "Festivals", singular: "Festival", glyph: "⛺", drawer: "stubs", wantable: true, ticket: true, reminder: true, fields: [
     { key: "venue", label: "Location" }, date, { key: "endDate", label: "Until", type: "date" }, time,
     { key: "acts", label: "Acts / performers", type: "textarea", placeholder: "one per line…" },
-    { key: "creator", label: "Favourite act" }] },
+    { key: "creator", label: "Favorite act" }] },
   { id: "shows", name: "Shows", singular: "Show", glyph: "🎭", drawer: "stubs", wantable: true, ticket: true, reminder: true, fields: [
     { key: "creator", label: "Company / cast" }, { key: "venue", label: "Theatre" }, date, time] },
   { id: "events", name: "Events", singular: "Event", glyph: "✦", drawer: "stubs", wantable: true, ticket: true, reminder: true, fields: [
@@ -72,11 +73,11 @@ const BASE_CATEGORIES: Category[] = [
   { id: "travels", name: "Journeys", singular: "Journey", glyph: "✈", drawer: "travel", travel: true, reminder: true, fields: [
     { key: "country", label: "Countries", placeholder: "Scotland, Japan…" },
     { key: "city", label: "Cities", placeholder: "Edinburgh, Inverness, Kyoto…" },
-    date, { key: "endDate", label: "Until", type: "date" }, { key: "creator", label: "Travelled with" }] },
+    date, { key: "endDate", label: "Until", type: "date" }, { key: "creator", label: "Traveled with" }] },
   { id: "places", name: "Places Visited", singular: "Place", glyph: "⌂", drawer: "travel", travel: true, fields: [
     { key: "town", label: "Town" }, { key: "country", label: "Country" }, date] },
-  { id: "thirdplaces", name: "Third Places", singular: "Third Place", glyph: "☕", drawer: "travel", travel: true, fields: [
-    { key: "kind", label: "Kind", type: "select", options: ["Café", "Walking path", "Scenery", "Library", "Pub", "Bookshop", "Other"] },
+  { id: "thirdplaces", name: "Social Spaces", singular: "Social Space", glyph: "☕", drawer: "travel", travel: true, fields: [
+    { key: "kind", label: "Kind", type: "select", options: ["Café", "Walking path", "Scenery", "Library", "Pub", "Bookstore", "Other"] },
     { key: "kindOther", label: "Other kind of place", showWhen: { key: "kind", value: "Other" } },
     { key: "town", label: "Town" }, { key: "country", label: "Country" }, date] },
 
@@ -87,9 +88,20 @@ const BASE_CATEGORIES: Category[] = [
     { key: "kind", label: "Kind", type: "select", options: ["Coffee", "Tea", "Tisane"] },
     { key: "roast", label: "Roast", type: "select", options: ["Light", "Medium", "Medium-dark", "Dark"] },
     { key: "steep", label: "Steep time", type: "select", options: ["30 seconds", "1 minute", "2 minutes", "3 minutes", "4 minutes", "5+ minutes"] },
-    { key: "flavor", label: "Flavour profile", placeholder: "bright, citrusy, malty…" }] },
-  { id: "favourites", name: "Other Favourites", singular: "Favourite", glyph: "❀", drawer: "curios", wantable: true, fields: [
+    { key: "flavor", label: "Flavor profile", placeholder: "bright, citrusy, malty…" }] },
+  { id: "favourites", name: "Other Favorites", singular: "Favorite", glyph: "❀", drawer: "curios", wantable: true, fields: [
     { key: "creator", label: "Maker / source" }, date] },
+  { id: "health", name: "Doctor & Symptom Tracker", singular: "Health Entry", glyph: "♡", drawer: "hearth", reminder: true, fields: [
+    { key: "entryType", label: "Entry type", type: "select", options: ["Doctor's appointment", "Symptom log"] }, date, time,
+    { key: "doctor", label: "Doctor / provider" }, { key: "clinic", label: "Clinic / location" },
+    { key: "reason", label: "Reason for visit", type: "textarea" },
+    { key: "symptoms", label: "Symptoms", type: "textarea" },
+    { key: "onset", label: "Symptom onset", type: "date" },
+    { key: "severity", label: "Symptom severity (0–10)", type: "select", options: Array.from({ length: 11 }, (_, i) => String(i)) },
+    { key: "duration", label: "Duration / frequency" }, { key: "medications", label: "Medications / treatment", type: "textarea" },
+    { key: "questions", label: "Questions for the doctor", type: "textarea" },
+    { key: "advice", label: "Doctor's advice / next steps", type: "textarea" },
+    { key: "followUp", label: "Follow-up date", type: "date" }] },
 ];
 
 export const SENSES = [
