@@ -17,6 +17,8 @@
     "rolldown": "1.2.1"
   },
   "dependencies": {
+    "@draftbit/babel-plugin-inject-jsx-source": "file:/usr/local/node_modules/@draftbit/babel-plugin-inject-jsx-source",
+    "@draftbit/iframe-element-picker": "file:/usr/local/node_modules/@draftbit/iframe-element-picker",
     "@fontsource/caveat": "^5.3.0",
     "@fontsource/cormorant-garamond": "^5.3.0",
     "@fontsource/karla": "^5.3.0",
@@ -81,10 +83,12 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "2.26.5",
     "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.0.0",
+    "@types/babel__core": "^7",
     "@types/d3-geo": "^3.1.1",
     "@types/d3-selection": "^3.0.12",
     "@types/d3-zoom": "^3.0.9",

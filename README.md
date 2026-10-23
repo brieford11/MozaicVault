@@ -24,6 +24,8 @@ Continue developing this project in the [Lovable editor](https://lovable.dev/pro
 
 ## Development
 
+The app uses React 19, TanStack Start, and Vite with the shared Lovable configuration. Draftbit visual editing uses a source-injection plugin placed before the shared plugins and a custom client entry that imports the generated `.draftbit/init.js` bootstrap. TanStack's route splitting runs before source injection to keep generated branch helpers valid, including in split route modules. Draftbit manages sandbox dependencies with Yarn; do not edit the generated bootstrap.
+
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```sh
