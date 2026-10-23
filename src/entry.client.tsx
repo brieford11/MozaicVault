@@ -1,13 +1,13 @@
 import { StrictMode, startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { StartClient } from "@tanstack/react-start/client";
+import { HydratedRouter } from "react-router/dom";
 import "../.draftbit/init.js";
 
 startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
-      <StartClient />
+      <HydratedRouter />
     </StrictMode>,
   );
 });

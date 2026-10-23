@@ -20,3 +20,4 @@
 - Cabinet customization uses the existing IndexedDB preferences store and normalized ordered records so newly added cabinets appear without losing previous settings.
 - Health tracker details use the existing entry fields and reminder model so private health data remains local and exports remain compatible.
 - Atlas pin selection resolves only manually recorded city/town fields through a browser-safe helper, never navigation or remote lookup.
+- React Router framework mode owns the publishing shell (`src/root.tsx`, `src/routes.ts`) in SPA mode; the catch-all archive mounts existing TanStack Router pages. Keep archive URLs, IndexedDB data, and the Draftbit client bootstrap intact. Static build output is `build/client`.

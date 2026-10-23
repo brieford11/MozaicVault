@@ -1,49 +1,35 @@
-// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
-// or the app will break with duplicate plugins:
-//   - TanStack devtools (dev-only), tanstackStart, viteReact, tailwindcss, tsConfigPaths,
-//     nitro (build-only using cloudflare as a default target), VITE_* env injection, @ path alias,
-//     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "vite";
+import { reactRouter } from "@react-router/dev/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import tailwindcss from "@tailwindcss/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { vitePlugin as injectJsxSourcePlugin } from "@draftbit/babel-plugin-inject-jsx-source";
-import type { ConfigEnv } from "vite";
 
-const projectConfig = (env: ConfigEnv) =>
-  defineConfig({
-    tanstackStart: {
-      // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-      // nitro/vite builds from this
-      server: { entry: "server" },
-      client: { entry: "client" },
-    },
-    vite: {
-      optimizeDeps: {
-        include: ["@draftbit/iframe-element-picker", "@draftbit/babel-plugin-inject-jsx-source"],
-      },
-    },
-  })(env);
+const sourcePlugin = injectJsxSourcePlugin();
+const transform = sourcePlugin.transform;
+if (typeof transform === "function") {
+  sourcePlugin.transform = function (code, id, options) {
+    return transform.call(this, code, id.split("?")[0] ?? id, options);
+  };
+}
 
-export default async (env: ConfigEnv) => {
-  const config = await projectConfig(env);
-  const sourcePlugin = injectJsxSourcePlugin();
-  // Split routes before injecting helpers, then instrument the split JSX too.
-  sourcePlugin.configResolved = (resolved) => {
-    for (const plugin of resolved.plugins) {
-      if (
-        plugin.name.startsWith("tanstack-router:code-splitter:") &&
-        typeof plugin.transform === "object"
-      ) {
-        plugin.transform.order = "pre";
-      }
-    }
-  };
-  const transform = sourcePlugin.transform;
-  if (typeof transform === "function") {
-    sourcePlugin.transform = function (code, id, options) {
-      return transform.call(this, code, id.split("?")[0] ?? id, options);
-    };
-  }
-  return {
-    ...config,
-    plugins: [sourcePlugin, ...(config.plugins ?? [])],
-  };
-};
+export default defineConfig({
+  plugins: [
+    sourcePlugin,
+    tanstackRouter({ target: "react", autoCodeSplitting: false }),
+    reactRouter(),
+    tailwindcss(),
+    tsconfigPaths(),
+  ],
+  resolve: { dedupe: ["react", "react-dom", "@tanstack/react-router"] },
+  optimizeDeps: {
+    include: ["@draftbit/iframe-element-picker", "@draftbit/babel-plugin-inject-jsx-source"],
+  },
+  server: {
+    host: "0.0.0.0",
+    port: Number(process.env["WORKING_METRO_PORT"] ?? 36259),
+    strictPort: true,
+    cors: true,
+    allowedHosts: true,
+  },
+});

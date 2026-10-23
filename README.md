@@ -22,15 +22,10 @@ Continue developing this project in the [Lovable editor](https://lovable.dev/pro
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
 - **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
-## Development
+## Development and publishing
 
-The app uses React 19, TanStack Start, and Vite with the shared Lovable configuration. Draftbit visual editing uses a source-injection plugin placed before the shared plugins and a custom client entry that imports the generated `.draftbit/init.js` bootstrap. TanStack's route splitting runs before source injection to keep generated branch helpers valid, including in split route modules. Draftbit manages sandbox dependencies with Yarn; do not edit the generated bootstrap.
+The app uses React 19 and Vite 8 with React Router 7 framework mode. React Router owns the document and publishing build; its catch-all archive route mounts the existing TanStack Router pages, preserving cabinet links, entry URLs, and local IndexedDB data. SPA mode (`ssr: false`) produces static publishing assets in `build/client`; no runtime server or cloud storage is required for the archive.
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Draftbit manages sandbox dependencies with Yarn. The `dev` and `build` scripts use the React Router CLI, `preview` serves the static build, and `test` runs Vitest. Draftbit visual editing uses the source-injection plugin and the client entry’s generated `.draftbit/init.js` bootstrap; do not edit that bootstrap.
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+Save your work in Draftbit, then use Publishing settings to publish the web app.

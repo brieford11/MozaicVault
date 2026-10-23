@@ -32,3 +32,5 @@ dist-ssr
 *.sw?
 .yarn/install-state.gz
 build
+
+.react-router/
