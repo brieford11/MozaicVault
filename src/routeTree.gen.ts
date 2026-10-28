@@ -10,15 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as FavouritesRouteImport } from './routes/favourites'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as PinboardRouteImport } from './routes/pinboard'
+import { Route as ReadingRouteImport } from './routes/reading'
 import { Route as EntryIdRouteImport } from './routes/entry.$id'
 import { Route as ShelfCatRouteImport } from './routes/shelf.$cat'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarRoute = CalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FavouritesRoute = FavouritesRouteImport.update({
@@ -36,6 +43,11 @@ const PinboardRoute = PinboardRouteImport.update({
   path: '/pinboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReadingRoute = ReadingRouteImport.update({
+  id: '/reading',
+  path: '/reading',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EntryIdRoute = EntryIdRouteImport.update({
   id: '/entry/$id',
   path: '/entry/$id',
@@ -49,50 +61,75 @@ const ShelfCatRoute = ShelfCatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarRoute
   '/favourites': typeof FavouritesRoute
   '/map': typeof MapRoute
   '/pinboard': typeof PinboardRoute
+  '/reading': typeof ReadingRoute
   '/entry/$id': typeof EntryIdRoute
   '/shelf/$cat': typeof ShelfCatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarRoute
   '/favourites': typeof FavouritesRoute
   '/map': typeof MapRoute
   '/pinboard': typeof PinboardRoute
+  '/reading': typeof ReadingRoute
   '/entry/$id': typeof EntryIdRoute
   '/shelf/$cat': typeof ShelfCatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarRoute
   '/favourites': typeof FavouritesRoute
   '/map': typeof MapRoute
   '/pinboard': typeof PinboardRoute
+  '/reading': typeof ReadingRoute
   '/entry/$id': typeof EntryIdRoute
   '/shelf/$cat': typeof ShelfCatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/favourites' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/favourites' | '/map' | '/pinboard' | '/entry/$id' | '/shelf/$cat'
-  id:
-    | '__root__'
     | '/'
+    | '/calendar'
     | '/favourites'
     | '/map'
     | '/pinboard'
+    | '/reading'
+    | '/entry/$id'
+    | '/shelf/$cat'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/calendar'
+    | '/favourites'
+    | '/map'
+    | '/pinboard'
+    | '/reading'
+    | '/entry/$id'
+    | '/shelf/$cat'
+  id:
+    | '__root__'
+    | '/'
+    | '/calendar'
+    | '/favourites'
+    | '/map'
+    | '/pinboard'
+    | '/reading'
     | '/entry/$id'
     | '/shelf/$cat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CalendarRoute: typeof CalendarRoute
   FavouritesRoute: typeof FavouritesRoute
   MapRoute: typeof MapRoute
   PinboardRoute: typeof PinboardRoute
+  ReadingRoute: typeof ReadingRoute
   EntryIdRoute: typeof EntryIdRoute
   ShelfCatRoute: typeof ShelfCatRoute
 }
@@ -104,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar': {
+      id: '/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof CalendarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/favourites': {
@@ -127,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PinboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reading': {
+      id: '/reading'
+      path: '/reading'
+      fullPath: '/reading'
+      preLoaderRoute: typeof ReadingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/entry/$id': {
       id: '/entry/$id'
       path: '/entry/$id'
@@ -146,9 +197,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CalendarRoute: CalendarRoute,
   FavouritesRoute: FavouritesRoute,
   MapRoute: MapRoute,
   PinboardRoute: PinboardRoute,
+  ReadingRoute: ReadingRoute,
   EntryIdRoute: EntryIdRoute,
   ShelfCatRoute: ShelfCatRoute,
 }

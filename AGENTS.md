@@ -17,7 +17,7 @@
 - Local reminder checks run in the shared root only while the app is open; downloadable ICS alarms provide an explicit user-controlled handoff to a calendar for closed-app reminders.
 - Keep the legacy database name and JSON archive format identifier stable across branding changes to preserve existing user data.
 - Firebase's web API key is served to the browser by a server function that reads it from the secret store at request time, so it stays out of the source tree and the client bundle; keep that read inside the handler body.
-- Cabinet customization uses the existing IndexedDB preferences store and normalized ordered records so newly added cabinets appear without losing previous settings.
-- Health tracker details use the existing entry fields and reminder model so private health data remains local and exports remain compatible.
+- Bookshelf preferences keep names/colors/order, frame color and selected/expanded shelves separate from hidden `drawer:<id>` keys; retain at least one visible shelf and restore hidden options without deleting entries.
+- Motion & Medicine owns the legacy `health` category for appointments and symptoms. Reading status/dates use existing book fields; calendar dates, journey spans and reminders are derived locally. Phone calendar handoff is an explicit ICS import, without automatic sync.
 - Atlas pin selection resolves only manually recorded city/town fields through a browser-safe helper, never navigation or remote lookup.
 - React Router framework mode owns the publishing shell (`src/root.tsx`, `src/routes.ts`) in SPA mode; the catch-all archive mounts existing TanStack Router pages. Keep archive URLs, IndexedDB data, and the Draftbit client bootstrap intact. Static build output is `build/client`.

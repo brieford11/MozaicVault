@@ -29,3 +29,13 @@ The app uses React 19 and Vite 8 with React Router 7 framework mode. React Route
 Draftbit manages sandbox dependencies with Yarn. The `dev` and `build` scripts use the React Router CLI, `preview` serves the static build, and `test` runs Vitest. Draftbit visual editing uses the source-injection plugin and the client entry’s generated `.draftbit/init.js` bootstrap; do not edit that bootstrap.
 
 Save your work in Draftbit, then use Publishing settings to publish the web app.
+
+## Bookshelf
+
+The home page starts with the media bookshelf. Add optional shelves for Keepsakes, The Sanctum, Inner Compass, Hearth, Pursuits & Passions, Motion & Medicine, and the existing collections. Each shelf folds closed and offers its available subshelves, including unchecked options. Hidden shelves and subshelves live in a restorable hidden cabinet; hiding never deletes their entries. At least one shelf remains visible; removing a shelf preserves its records. Selections, expanded shelves, frame color, names, colors, and order are saved in the existing local IndexedDB preferences store. New categories use the same journal editor and archive export format.
+
+## Reading and calendar
+
+Books can be marked Not started, Up next, Reading, or Read. The Reading tab collects current and upcoming books, with finished books available separately. The local Calendar tab shows appointments, events, travel spans, transport legs, and reminders across past and future dates. Motion & Medicine contains appointments and symptoms under the original `health` category ID.
+
+Adding events to a phone calendar is an optional ICS handoff through sharing or download. It does not sync edits automatically, and the chosen calendar app may store imported details outside the private archive. There is no app-imposed entry limit; browser/device storage capacity still applies.

@@ -111,9 +111,120 @@
 .cabinet { box-shadow: var(--shadow-drawer); }
 .cabinet-label { background: var(--cabinet-label); color: var(--cabinet-ink); border: 1px solid var(--cabinet-edge); }
 .sensory-line { min-height: 2.5rem; overflow-wrap: anywhere; white-space: pre-wrap; }
-.bookshelf-bay { min-height: 240px; }
+/* The bookshelf is a single carved frame; the archive's other pages keep their tokens. */
+:root {
+  --antique-wood: #36281f;
+  --antique-edge: #6a4f37;
+  --antique-wear: #947750;
+  --antique-shadow: #1c1612;
+  --antique-brass: #bc9a60;
+}
+.antique-bookshelf {
+  position: relative;
+  overflow: hidden;
+  border: 9px ridge var(--antique-edge);
+  border-radius: 42px 42px 4px 4px;
+  background-color: var(--antique-wood);
+  background-image:
+    radial-gradient(ellipse at 3% 18%, #a3845140, transparent 33%),
+    repeating-linear-gradient(92deg, transparent 0 5px, #120c0930 6px 7px, transparent 8px 16px),
+    linear-gradient(90deg, #100c0980, transparent 9% 91%, #100c0980);
+  box-shadow: 0 0 0 1px var(--antique-shadow), inset 0 0 20px #0009, 0 16px 28px -14px #000b;
+}
+.antique-bookshelf::before, .antique-bookshelf::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 10px;
+  background: url("./assets/bookshelf-grain.jpg") center / 100% auto repeat-y;
+  box-shadow: inset -2px 0 3px #0009;
+  pointer-events: none;
+}
+.antique-bookshelf::after { left: auto; right: 0; transform: scaleX(-1); }
+.bookshelf-crown {
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-bottom: 4px ridge var(--antique-wear);
+  background: linear-gradient(#1c161240, #1c161250), url("./assets/mosaic-shelf.jpg") center top / 100% auto;
+}
+.bookshelf-crown span {
+  color: var(--antique-brass);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  text-shadow: 0 2px 2px #000;
+}
+.bookshelf-bay { padding: 16px 12px 22px; position: relative; }
+.bookshelf-bay::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 14px;
+  border-top: 2px solid var(--antique-wear);
+  border-bottom: 2px solid var(--antique-shadow);
+  background: linear-gradient(#1c161220, #1c161240), url("./assets/bookshelf-ledge.jpg") center / 100% 100%;
+  box-shadow: 0 6px 9px #0006;
+}
+.antique-cabinet {
+  color: var(--parchment);
+  border: 2px ridge color-mix(in oklch, var(--cabinet-color) 42%, var(--antique-wear));
+  border-radius: 3px;
+  background-color: color-mix(in oklch, var(--cabinet-color) 34%, var(--antique-wood));
+  background-image:
+    radial-gradient(ellipse at 9% 12%, #ebc47a20, transparent 44%),
+    radial-gradient(ellipse at 89% 86%, #080c094f, transparent 45%),
+    repeating-linear-gradient(1deg, transparent 0 7px, #efe2c307 8px, #100b0b17 9px, transparent 10px 19px);
+  box-shadow: inset 0 1px 1px #c0a78055, inset 0 0 16px #0006, 0 6px 12px -4px #0009;
+}
+.shelf-heading { padding: 16px 12px 14px; }
+.brass-nameplate {
+  position: relative;
+  padding: 4px 17px;
+  color: var(--ink);
+  border: 2px ridge var(--antique-brass);
+  border-radius: 3px 9px 3px 9px;
+  background: radial-gradient(ellipse at 20% 10%, #f5e5b640, transparent 60%), linear-gradient(100deg, #b79a68, #d0b47a 50%, #b19a70);
+  box-shadow: 0 2px 4px #0008, inset 0 0 5px #5b412750;
+}
+.brass-nameplate::before, .brass-nameplate::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 2px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--antique-wood);
+  box-shadow: 0 1px 0 #efdaa8;
+}
+.brass-nameplate::before { left: 5px; }
+.brass-nameplate::after { right: 5px; }
+.shelf-chevron { color: var(--parchment); font-size: 1.6rem; transform: rotate(-90deg); }
+.shelf-chevron.is-open { transform: rotate(0deg); }
+.antique-label {
+  background-color: var(--parchment-deep);
+  background-image: radial-gradient(ellipse at 5% 97%, #80583329, transparent 60%), linear-gradient(100deg, #b9a27e24, #fff5dc30 45%, #bba28238);
+  border: 1px solid var(--antique-edge);
+  box-shadow: inset 0 0 7px #84673f24, 0 2px 3px #0004;
+}
+.antique-label:nth-child(4n + 2) { border-radius: 5px 2px 4px 2px; }
+.antique-label:hover { filter: brightness(1.07); }
+.shelf-options { color: var(--parchment); }
+.bookshelf-foot { height: 18px; background: linear-gradient(var(--antique-edge), var(--antique-wood)); }
+summary { list-style: none; }
+summary::-webkit-details-marker { display: none; }
+.details-chevron { display: inline-block; transform: rotate(-90deg); }
+details[open] > summary > .details-chevron { transform: rotate(0); }
+summary:focus-visible, .shelf-heading:focus-visible, .antique-label:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
 @media (max-width: 380px) {
-  .bookshelf-bay { padding-inline: 1.25rem; }
+  .bookshelf-bay { padding-inline: 7px; }
+  .shelf-heading { padding-inline: 9px; }
+  .antique-bookshelf { border-width: 6px; }
+  .shelf-links { grid-template-columns: minmax(0, 1fr); }
+  .antique-label { flex-wrap: nowrap; min-height: 52px; }
+  .antique-label > span:last-child { margin-left: auto; }
 }
 
 @layer base {
@@ -177,4 +288,63 @@
   font-family: var(--font-display);
   letter-spacing: 0.15em;
   text-transform: uppercase;
+}
+
+[data-cabinet-color="oak"] { --cabinet-color: #a58255; }
+[data-cabinet-color="walnut"] { --cabinet-color: #694932; }
+[data-cabinet-color="oxblood"] { --cabinet-color: #793c42; }
+[data-cabinet-color="navy"] { --cabinet-color: #354b6a; }
+[data-cabinet-color="plum"] { --cabinet-color: #654462; }
+[data-cabinet-color="charcoal"] { --cabinet-color: #555651; }
+[data-cabinet-color="cream"] { --cabinet-color: #c4bda2; }
+.antique-bookshelf[data-cabinet-color] {
+  --antique-wood: color-mix(in oklch, var(--cabinet-color) 55%, #261b15);
+  --antique-edge: color-mix(in oklch, var(--cabinet-color) 70%, #8c7653);
+  --antique-wear: color-mix(in oklch, var(--cabinet-color) 50%, #c4ae7c);
+  --frame-overlay: color-mix(in oklch, var(--cabinet-color) 60%, transparent);
+}
+.antique-bookshelf::before, .antique-bookshelf::after {
+  background-image: linear-gradient(var(--frame-overlay), var(--frame-overlay)), url("./assets/bookshelf-grain.jpg");
+}
+.bookshelf-crown { background-image: linear-gradient(var(--frame-overlay), #1c161250), url("./assets/mosaic-shelf.jpg"); }
+.shelf-chevron {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--brass);
+  border-radius: 50%;
+  background: #0003;
+  line-height: 1;
+}
+.details-chevron {
+  display: inline-flex;
+  width: 26px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.calendar-has-event button { text-decoration: underline; text-decoration-color: var(--brass); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+@media (max-width: 360px) {
+  [data-slot="calendar"] { --cell-size: 1.8rem; padding-inline: 0.25rem; }
+  .brass-nameplate { font-size: 1.25rem; }
+  .shelf-heading { gap: 0.5rem; padding-inline: 8px; }
+}
+
+.shelf-chevron, .details-chevron { font-size: 0; }
+.shelf-chevron::before, .details-chevron::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  margin-top: -3px;
 }

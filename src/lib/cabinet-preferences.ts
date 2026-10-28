@@ -8,24 +8,49 @@ export const CABINET_COLORS = [
   { id: "lavender", name: "Smoky lavender" },
   { id: "rose", name: "Muted rose" },
   { id: "teal", name: "Soft teal" },
+  { id: "oak", name: "Honey oak" },
+  { id: "walnut", name: "Old walnut" },
+  { id: "oxblood", name: "Oxblood" },
+  { id: "navy", name: "Midnight blue" },
+  { id: "plum", name: "Blackberry" },
+  { id: "charcoal", name: "Charcoal" },
+  { id: "cream", name: "Antique cream" },
 ] as const;
-export type CabinetColor = typeof CABINET_COLORS[number]["id"];
+export type CabinetColor = (typeof CABINET_COLORS)[number]["id"];
 export type CabinetPreference = { id: string; title: string; color: CabinetColor };
 
 export function normalizeCabinets(value: unknown): CabinetPreference[] {
   const stored = Array.isArray(value) ? value : [];
-  const ids = [...new Set([...stored.map((item) => item?.id), ...DRAWERS.map((drawer) => drawer.id)])];
+  const ids = [
+    ...new Set([...stored.map((item) => item?.id), ...DRAWERS.map((drawer) => drawer.id)]),
+  ];
   return ids.flatMap((id) => {
     const drawer = DRAWERS.find((item) => item.id === id);
     if (!drawer) return [];
     const setting = stored.find((item) => item?.id === id);
     const index = DRAWERS.findIndex((item) => item.id === id);
-    const color = CABINET_COLORS.find((item) => item.id === setting?.color)?.id ?? CABINET_COLORS[index % CABINET_COLORS.length]?.id ?? "sage";
-    return [{ id: drawer.id, title: typeof setting?.title === "string" && setting.title.trim() ? setting.title.slice(0, 60) : drawer.name, color }];
+    const color =
+      CABINET_COLORS.find((item) => item.id === setting?.color)?.id ??
+      CABINET_COLORS[index % 5]?.id ??
+      "sage";
+    return [
+      {
+        id: drawer.id,
+        title:
+          typeof setting?.title === "string" && setting.title.trim()
+            ? setting.title.slice(0, 60)
+            : drawer.name,
+        color,
+      },
+    ];
   });
 }
 
-export function moveCabinet(cabinets: CabinetPreference[], id: string, direction: -1 | 1): CabinetPreference[] {
+export function moveCabinet(
+  cabinets: CabinetPreference[],
+  id: string,
+  direction: -1 | 1,
+): CabinetPreference[] {
   const index = cabinets.findIndex((item) => item.id === id);
   const destination = index + direction;
   if (index < 0 || destination < 0 || destination >= cabinets.length) return cabinets;
@@ -41,17 +66,50 @@ export function useCabinets() {
   const [error, setError] = useState("");
   useEffect(() => {
     let active = true;
-    const load = () => readPreference("cabinets").then((value) => {
-      if (active) { setCabinets(normalizeCabinets(value)); setReady(true); }
-    }).catch(() => { if (active) setError("Could not open cabinet settings."); });
+    const load = () =>
+      readPreference("cabinets")
+        .then((value) => {
+          if (active) {
+            setCabinets(normalizeCabinets(value));
+            setReady(true);
+          }
+        })
+        .catch(() => {
+          if (active) setError("Could not open cabinet settings.");
+        });
     load();
     window.addEventListener("archive-preferences", load);
-    return () => { active = false; window.removeEventListener("archive-preferences", load); };
+    return () => {
+      active = false;
+      window.removeEventListener("archive-preferences", load);
+    };
   }, []);
   const update = async (next: CabinetPreference[]) => {
     setError("");
-    try { await writePreference("cabinets", normalizeCabinets(next)); setCabinets(normalizeCabinets(next)); }
-    catch { setError("Could not save cabinet settings. Please try again."); }
+    try {
+      await writePreference("cabinets", normalizeCabinets(next));
+      setCabinets(normalizeCabinets(next));
+    } catch {
+      setError("Could not save cabinet settings. Please try again.");
+    }
   };
   return { cabinets, ready, error, update };
+}
+export function moveVisibleCabinet(
+  cabinets: CabinetPreference[],
+  id: string,
+  direction: -1 | 1,
+  visible: string[],
+): CabinetPreference[] {
+  const ordered = cabinets.filter((item) => visible.includes(item.id));
+  const neighbor = ordered[ordered.findIndex((item) => item.id === id) + direction];
+  if (!neighbor) return cabinets;
+  const index = cabinets.findIndex((item) => item.id === id);
+  const destination = cabinets.findIndex((item) => item.id === neighbor.id);
+  const next = [...cabinets];
+  const current = next[index];
+  if (!current) return cabinets;
+  next[index] = neighbor;
+  next[destination] = current;
+  return next;
 }

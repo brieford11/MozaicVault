@@ -1,9 +1,110 @@
-import { BookOpen, Film, Tv, Disc3, Disc, CassetteTape, Music2, TentTree, Drama, Sparkles, Plane, House, Trees, Flower2, Coffee, Heart, LibraryBig, Map, Stethoscope, type LucideIcon } from "lucide-react";
+import {
+  BookOpen,
+  Film,
+  Tv,
+  Disc3,
+  Disc,
+  CassetteTape,
+  Music2,
+  TentTree,
+  Drama,
+  Sparkles,
+  Plane,
+  House,
+  Trees,
+  Flower2,
+  Coffee,
+  Heart,
+  LibraryBig,
+  Map,
+  Stethoscope,
+  Moon,
+  Compass,
+  Shield,
+  Feather,
+  Leaf,
+  PawPrint,
+  ShoppingBasket,
+  Gift,
+  Dumbbell,
+  Lightbulb,
+  Palette,
+  Search,
+  Quote,
+  Wind,
+  ScrollText,
+  FlaskConical,
+  CalendarDays,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const icons: Record<string, LucideIcon> = { books: BookOpen, films: Film, tvshows: Tv, vinyl: Disc3, cds: Disc, cassettes: CassetteTape, concerts: Music2, festivals: TentTree, shows: Drama, events: Sparkles, travels: Plane, places: House, thirdplaces: Trees, fragrances: Flower2, brews: Coffee, favourites: Heart, cabinet: LibraryBig, atlas: Map, health: Stethoscope };
+const icons: Record<string, LucideIcon> = {
+  books: BookOpen,
+  films: Film,
+  tvshows: Tv,
+  vinyl: Disc3,
+  cds: Disc,
+  cassettes: CassetteTape,
+  concerts: Music2,
+  festivals: TentTree,
+  shows: Drama,
+  events: Sparkles,
+  travels: Plane,
+  places: House,
+  thirdplaces: Trees,
+  fragrances: Flower2,
+  brews: Coffee,
+  favourites: Heart,
+  cabinet: LibraryBig,
+  atlas: Map,
+  calendar: CalendarDays,
+  health: Stethoscope,
+  subscriptions: Tv,
+  heirlooms: Heart,
+  antiques: House,
+  armory: Shield,
+  recipes: ScrollText,
+  dreams: Moon,
+  meditations: Flower2,
+  synchronicities: Sparkles,
+  shadow: Moon,
+  blessings: Heart,
+  astrology: Sparkles,
+  oracle: Sparkles,
+  lifeguides: BookOpen,
+  herbs: Leaf,
+  boundaries: Shield,
+  affirmations: Heart,
+  breathwork: Wind,
+  wisdom: Compass,
+  quotes: Quote,
+  philosophies: BookOpen,
+  lifegoals: Compass,
+  garden: Leaf,
+  pets: PawPrint,
+  groceries: ShoppingBasket,
+  holidays: Gift,
+  allergies: Stethoscope,
+  digitalcrafts: Lightbulb,
+  designprojects: Palette,
+  research: Search,
+  writings: Feather,
+  movement: Dumbbell,
+  medicine: FlaskConical,
+};
 
 export function ArchiveIcon({ category, className }: { category: string; className?: string }) {
   const Icon = icons[category] ?? Flower2;
-  return <span aria-hidden="true" className={cn("inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brass/30 bg-brass/10 text-brass", className)}><Icon className="h-5 w-5" strokeWidth={1.5} /></span>;
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-brass/30 bg-brass/10 text-brass",
+        className,
+      )}
+    >
+      <Icon className="h-5 w-5" strokeWidth={1.5} />
+    </span>
+  );
 }
